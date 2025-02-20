@@ -1,5 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 
+import TrainersPage from "./pages/trainers";
+
 import IndexPage from "@/pages/index";
 import DocsPage from "@/pages/docs";
 import PricingPage from "@/pages/pricing";
@@ -14,6 +16,7 @@ function App() {
       <Route element={<PricingPage />} path="/pricing" />
       <Route element={<BlogPage />} path="/blog" />
       <Route element={<AboutPage />} path="/about" />
+      <Route element={<TrainersPage />} path="/trainers" />
     </Routes>
   );
 }
