@@ -38,12 +38,14 @@ const TrainerBlock: React.FC<TrainerBlockProps> = ({ trainer }) => {
 
   return (
     <Card className="max-w-sm rounded-lg shadow-lg">
-      <CardHeader className="flex justify-center items-center h-48 overflow-hidden">
-        <Image
-          alt={`${trainer.firstName} ${trainer.lastName}`}
-          className="p-0 w-full h-full object-cover rounded-lg"
-          src={trainer.photoUrl}
-        />
+      <CardHeader className="relative w-full h-48 p-2">
+        <div className="w-full h-full rounded-lg overflow-hidden items-center justify-center flex">
+          <Image
+            alt={`${trainer.firstName} ${trainer.lastName}`}
+            className="inset-0 w-full h-full object-cover"
+            src={trainer.photoUrl}
+          />
+        </div>
       </CardHeader>
       <CardBody className="pt-0 pb-1">
         <h3 className="text-2xl pb-1 font-semibold">
