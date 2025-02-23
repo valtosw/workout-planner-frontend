@@ -15,23 +15,7 @@ import {
   TelegramIcon,
 } from "./icons";
 
-interface Trainer {
-  firstName: string;
-  lastName: string;
-  photoUrl: string;
-  experience?: string;
-  location?: string;
-  placeOfWork?: string;
-  trainingPrice: number;
-  bio?: string;
-  instagramLink?: string;
-  facebookLink?: string;
-  telegramLink?: string;
-}
-
-interface TrainerBlockProps {
-  trainer: Trainer;
-}
+import { TrainerBlockProps } from "@/types/trainer";
 
 const TrainerBlock: React.FC<TrainerBlockProps> = ({ trainer }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -149,5 +133,4 @@ const TrainerBlock: React.FC<TrainerBlockProps> = ({ trainer }) => {
   );
 };
 
-export type { Trainer };
 export default TrainerBlock;
