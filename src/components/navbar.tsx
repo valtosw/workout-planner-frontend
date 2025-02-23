@@ -25,7 +25,7 @@ export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   return (
-    <HeroUINavbar onMenuOpenChange={setIsMenuOpen}>
+    <HeroUINavbar maxWidth="full" onMenuOpenChange={setIsMenuOpen}>
       <NavbarContent>
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
