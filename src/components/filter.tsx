@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Slider,
   Select,
@@ -8,12 +8,8 @@ import {
   Button,
 } from "@heroui/react";
 
-import axios from "@/api/axios";
 import { getFilteredTrainers } from "@/api/trainerApi";
-
-interface FilterProps {
-  onFilter: (filters: any) => void;
-}
+import { FilterProps } from "@/types/trainer";
 
 const TrainerFilter: React.FC<FilterProps> = ({ onFilter }) => {
   const [experience, setExperience] = useState<string | null>(null);
@@ -24,7 +20,7 @@ const TrainerFilter: React.FC<FilterProps> = ({ onFilter }) => {
 
   const handleFilter = async () => {
     try {
-      const filteredTrainers = await getFilteredTrainers(
+      await getFilteredTrainers(
         experience,
         minPrice,
         maxPrice,
@@ -32,7 +28,13 @@ const TrainerFilter: React.FC<FilterProps> = ({ onFilter }) => {
         location,
       );
 
-      onFilter(filteredTrainers);
+      onFilter({
+        experience,
+        minPrice,
+        maxPrice,
+        isCertified,
+        location,
+      });
     } catch (error) {
       alert(error);
     }
