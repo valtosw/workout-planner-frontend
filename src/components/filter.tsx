@@ -55,12 +55,21 @@ const TrainerFilter: React.FC<FilterProps> = ({ onFilter }) => {
     fetchMaxPrice();
   }, []);
 
+  const resetFilter = () => {
+    setMinPrice(0);
+    setMaxPrice(maxPriceForSlider);
+    setExperience(0);
+    setIsCertified(null);
+    setLocation("");
+  };
+
   return (
     <div className="p-4 rounded-lg">
       <h2 className="text-lg font-semibold">Filter Trainers</h2>
       <div className="flex flex-col md:flex-row items-stretch md:items-center gap-4">
         <Slider
           color="secondary"
+          formatOptions={{ style: "currency", currency: "USD" }}
           label="Price Range"
           maxValue={maxPriceForSlider}
           minValue={0}
@@ -111,14 +120,18 @@ const TrainerFilter: React.FC<FilterProps> = ({ onFilter }) => {
         />
         <div className="flex flex-col md:flex-row gap-2 md:w-auto">
           <Button
-            className="w-full md:w-auto h-7"
+            className="w-full md:w-auto"
             color="secondary"
             onPress={handleFilter}
           >
             Apply
           </Button>
-          <Button className="w-full md:w-auto h-7" color="danger">
-            Restore
+          <Button
+            className="w-full md:w-auto"
+            color="danger"
+            onPress={resetFilter}
+          >
+            Reset
           </Button>
         </div>
       </div>
