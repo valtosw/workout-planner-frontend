@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Divider } from "@heroui/react";
 
 import TrainerBlock from "../components/trainer-block";
 import { Trainer } from "../types/trainer";
@@ -26,7 +27,7 @@ const TrainersPage: React.FC = () => {
   }, []);
 
   const handleFilter = async (filters: {
-    experience: string | null;
+    experience: number | null;
     minPrice: number;
     maxPrice: number;
     isCertified: boolean | null;
@@ -49,6 +50,14 @@ const TrainersPage: React.FC = () => {
 
   return (
     <DefaultLayout>
+      <div className="w-full">
+        <div className="sticky top-4">
+          <TrainerFilter onFilter={handleFilter} />
+        </div>
+      </div>
+
+      <Divider />
+
       <div className="w-full mx-auto p-4">
         <div className="flex-1">
           <div
@@ -64,12 +73,6 @@ const TrainersPage: React.FC = () => {
               />
             ))}
           </div>
-        </div>
-      </div>
-
-      <div className="w-64 ml-6">
-        <div className="sticky top-4">
-          <TrainerFilter onFilter={handleFilter} />
         </div>
       </div>
     </DefaultLayout>
