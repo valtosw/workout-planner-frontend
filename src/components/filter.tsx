@@ -1,22 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Slider,
-  Select,
-  SelectItem,
-  Checkbox,
   Input,
   Button,
+  NumberInput,
+  Select,
+  SelectItem,
 } from "@heroui/react";
 
-import { getFilteredTrainers } from "@/api/trainerApi";
+import { getFilteredTrainers, getMaxTrainingPrice } from "@/api/trainerApi";
 import { FilterProps } from "@/types/trainer";
 
 const TrainerFilter: React.FC<FilterProps> = ({ onFilter }) => {
-  const [experience, setExperience] = useState<string | null>(null);
+  const [experience, setExperience] = useState<number | null>(null);
   const [minPrice, setMinPrice] = useState<number>(0);
   const [maxPrice, setMaxPrice] = useState<number>(300);
   const [isCertified, setIsCertified] = useState<boolean | null>(null);
   const [location, setLocation] = useState<string>("");
+  const [maxPriceForSlider, setMaxPriceForSlider] = useState(0);
 
   const handleFilter = async () => {
     try {
@@ -40,45 +41,87 @@ const TrainerFilter: React.FC<FilterProps> = ({ onFilter }) => {
     }
   };
 
+  useEffect(() => {
+    const fetchMaxPrice = async () => {
+      try {
+        const maxPrice = await getMaxTrainingPrice();
+
+        setMaxPriceForSlider(maxPrice);
+      } catch (error) {
+        alert(error);
+      }
+    };
+
+    fetchMaxPrice();
+  }, []);
+
   return (
-    <div className="flex flex-col gap-4 p-4 border rounded-lg shadow-md">
+    <div className="p-4 rounded-lg">
       <h2 className="text-lg font-semibold">Filter Trainers</h2>
-      <Slider
-        label="Price Range"
-        maxValue={300}
-        minValue={0}
-        step={1}
-        value={[minPrice, maxPrice]}
-        onChange={(val: number | number[]) => {
-          if (Array.isArray(val)) {
-            setMinPrice(val[0]);
-            setMaxPrice(val[1]);
+      <div className="flex flex-col md:flex-row items-stretch md:items-center gap-4">
+        <Slider
+          color="secondary"
+          label="Price Range"
+          maxValue={maxPriceForSlider}
+          minValue={0}
+          step={1}
+          value={[minPrice, maxPrice]}
+          onChange={(val: number | number[]) => {
+            if (Array.isArray(val)) {
+              setMinPrice(val[0]);
+              setMaxPrice(val[1]);
+            }
+          }}
+        />
+        <NumberInput
+          label="Experience"
+          maxValue={70}
+          minValue={0}
+          placeholder="Minimum number of years"
+          onValueChange={setExperience}
+        />
+        <Select
+          label="Trainer Certification"
+          selectedKeys={[
+            isCertified === true
+              ? "true"
+              : isCertified === false
+                ? "false"
+                : "null",
+          ]}
+          onChange={(e) =>
+            setIsCertified(
+              e.target.value === "true"
+                ? true
+                : e.target.value === "false"
+                  ? false
+                  : null,
+            )
           }
-        }}
-      />
-      <Select
-        label="Experience"
-        onChange={(e) => setExperience(e.target.value)}
-      >
-        {["1+", "3+", "5+", "10+"].map((exp) => (
-          <SelectItem key={exp}>{exp} years</SelectItem>
-        ))}
-      </Select>
-      <Checkbox
-        isSelected={isCertified ?? false}
-        onChange={(e) => setIsCertified(e.target.checked)}
-      >
-        Certified Trainers
-      </Checkbox>
-      <Input
-        label="Location"
-        placeholder="Enter location"
-        value={location}
-        onChange={(e) => setLocation(e.target.value)}
-      />
-      <Button color="primary" onClick={handleFilter}>
-        Apply Filters
-      </Button>
+        >
+          <SelectItem key="null">All</SelectItem>
+          <SelectItem key="true">Certified</SelectItem>
+          <SelectItem key="false">Not Certified</SelectItem>
+        </Select>
+        <Input
+          label="Location"
+          placeholder="Enter location"
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
+        />
+        <div className="flex flex-col md:flex-row gap-2 md:w-auto">
+          <Button
+            className="w-full md:w-auto h-7"
+            color="secondary"
+            onPress={handleFilter}
+          >
+            Apply
+          </Button>
+          <Button className="w-full md:w-auto h-7" color="danger">
+            Restore
+          </Button>
+        </div>
+      </div>
     </div>
   );
 };
