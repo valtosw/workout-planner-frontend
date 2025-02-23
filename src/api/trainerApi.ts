@@ -1,26 +1,12 @@
 import axios from "./axios";
 
-import { Trainer } from "@/components/trainer-block";
+import { MappedTrainers } from "@/types/trainer";
 
 export const getPostedTrainersList = async () => {
   try {
     const response = await axios.get("/Trainer/posted");
 
-    const mappedTrainers: Trainer[] = response.data.map((trainer: any) => ({
-      firstName: trainer.firstName,
-      lastName: trainer.lastName,
-      photoUrl: trainer.profilePicture,
-      experience: trainer.experience,
-      location: trainer.location,
-      placeOfWork: trainer.placeOfWork,
-      trainingPrice: trainer.trainingPrice ?? 0,
-      bio: trainer.bio,
-      instagramLink: trainer.instagramLink,
-      facebookLink: trainer.facebookLink,
-      telegramLink: trainer.telegramLink,
-    }));
-
-    return mappedTrainers;
+    return MappedTrainers(response.data);
   } catch (error) {
     alert("Failed to fetch trainers list");
     throw error;
@@ -45,7 +31,7 @@ export const getFilteredTrainers = async (
       },
     });
 
-    return response.data;
+    return MappedTrainers(response.data);
   } catch (error) {
     alert(error);
     throw error;
