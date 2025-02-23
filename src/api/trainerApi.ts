@@ -8,20 +8,19 @@ export const getPostedTrainersList = async () => {
 
     return MappedTrainers(response.data);
   } catch (error) {
-    alert("Failed to fetch trainers list");
     throw error;
   }
 };
 
 export const getFilteredTrainers = async (
-  experience: string | null,
+  experience: number | null,
   minPrice: number,
   maxPrice: number,
   isCertified: boolean | null,
   location: string,
 ) => {
   try {
-    const response = await axios.get("/Trainer/filter", {
+    const response = await axios.get("/Trainer/filtered", {
       params: {
         experience,
         minPrice,
@@ -33,7 +32,16 @@ export const getFilteredTrainers = async (
 
     return MappedTrainers(response.data);
   } catch (error) {
-    alert(error);
+    throw error;
+  }
+};
+
+export const getMaxTrainingPrice = async () => {
+  try {
+    const response = await axios.get("/Trainer/max-price");
+
+    return response.data;
+  } catch (error) {
     throw error;
   }
 };
