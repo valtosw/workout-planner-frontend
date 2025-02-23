@@ -1,4 +1,5 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 import {
   Navbar as HeroUINavbar,
   NavbarBrand,
@@ -23,6 +24,7 @@ const MenuItems = ["Profile", "Workout Plans", "Trainers", "Log Out"];
 
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const location = useLocation();
 
   return (
     <HeroUINavbar maxWidth="full" onMenuOpenChange={setIsMenuOpen}>
@@ -38,18 +40,25 @@ export const Navbar = () => {
       </NavbarContent>
 
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        {/* <NavbarItem>
-          <Link color="foreground" href="#">
-            Features
-          </Link>
-        </NavbarItem> */}
-        <NavbarItem isActive>
-          <Link aria-current="page" color="secondary" href="#">
+        <NavbarItem isActive={location.pathname === "/workout-plans"}>
+          <Link
+            color={
+              location.pathname === "/workout-plans"
+                ? "secondary"
+                : "foreground"
+            }
+            href="/workout-plans"
+          >
             Workout Plans
           </Link>
         </NavbarItem>
-        <NavbarItem>
-          <Link color="foreground" href="#">
+        <NavbarItem isActive={location.pathname === "/trainers"}>
+          <Link
+            color={
+              location.pathname === "/trainers" ? "secondary" : "foreground"
+            }
+            href="/trainers"
+          >
             Trainers
           </Link>
         </NavbarItem>
