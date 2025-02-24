@@ -35,7 +35,7 @@ export const Navbar = () => {
         />
         <NavbarBrand>
           <Logo />
-          <p className="font-bold text-inherit">ACME</p>
+          <p className="font-bold text-inherit">Workout Planner</p>
         </NavbarBrand>
       </NavbarContent>
 
