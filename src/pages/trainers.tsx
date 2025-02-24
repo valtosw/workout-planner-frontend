@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Divider } from "@heroui/react";
+import { Divider, CircularProgress } from "@heroui/react";
 
 import TrainerBlock from "../components/trainer-block";
 import { Trainer } from "../types/trainer";
@@ -11,6 +11,7 @@ import DefaultLayout from "@/layouts/default";
 
 const TrainersPage: React.FC = () => {
   const [trainers, setTrainers] = useState<Trainer[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchTrainers = async () => {
@@ -20,6 +21,8 @@ const TrainersPage: React.FC = () => {
         setTrainers(trainers);
       } catch (error) {
         alert(error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -33,6 +36,7 @@ const TrainersPage: React.FC = () => {
     isCertified: boolean | null;
     location: string;
   }) => {
+    setIsLoading(true);
     try {
       const filteredTrainers = await getFilteredTrainers(
         filters.experience,
@@ -45,6 +49,8 @@ const TrainersPage: React.FC = () => {
       setTrainers(filteredTrainers);
     } catch (error) {
       alert(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -60,19 +66,33 @@ const TrainersPage: React.FC = () => {
 
       <div className="w-full mx-auto p-4">
         <div className="flex-1">
-          <div
-            className="grid gap-6 p-4"
-            style={{
-              gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-            }}
-          >
-            {trainers.map((trainer) => (
-              <TrainerBlock
-                key={trainer.firstName + trainer.lastName}
-                trainer={trainer}
-              />
-            ))}
-          </div>
+          {isLoading && (
+            <div className="flex justify-center items-center h-64">
+              <CircularProgress color="secondary" label="Loading..." />
+            </div>
+          )}
+
+          {!isLoading && trainers.length === 0 && (
+            <h1 className="text-center text-gray-500 text-2xl">
+              No trainers found
+            </h1>
+          )}
+
+          {!isLoading && trainers.length > 0 && (
+            <div
+              className="grid gap-6 p-4"
+              style={{
+                gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+              }}
+            >
+              {trainers.map((trainer) => (
+                <TrainerBlock
+                  key={trainer.firstName + trainer.lastName}
+                  trainer={trainer}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </DefaultLayout>
