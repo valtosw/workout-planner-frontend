@@ -69,6 +69,7 @@ export const LandingNavbar = () => {
           <Button
             as={Link}
             className="text-sm font-normal text-default-600 bg-default-100"
+            href="/login"
             variant="flat"
           >
             Login
@@ -78,6 +79,7 @@ export const LandingNavbar = () => {
           <Button
             as={Link}
             className="text-sm font-normal text-default-600 bg-default-100"
+            href="/signup"
             variant="flat"
           >
             Sing Up
