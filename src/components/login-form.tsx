@@ -4,7 +4,7 @@ import React from "react";
 import { Button, Input, Checkbox, Link, Form, Divider } from "@heroui/react";
 import { Icon } from "@iconify/react";
 
-import { Logo } from "@/components/icons";
+import { FacebookIcon2, Logo } from "@/components/icons";
 
 export const LoginForm = () => {
   const [isVisible, setIsVisible] = React.useState(false);
@@ -85,6 +85,14 @@ export const LoginForm = () => {
             variant="bordered"
           >
             Continue with Google
+          </Button>
+        </div>
+        <div className="flex flex-col gap-2">
+          <Button
+            startContent={<FacebookIcon2 width={24} />}
+            variant="bordered"
+          >
+            Sign Up with Facebook
           </Button>
         </div>
         <p className="text-center text-small">
