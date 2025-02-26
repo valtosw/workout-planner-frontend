@@ -1,14 +1,11 @@
 import { useState } from "react";
 import { Icon } from "@iconify/react";
-import { useTheme } from "@heroui/use-theme";
 import { Card } from "@heroui/react";
 
 import { DumbbellIcon } from "@/components/icons";
 
 export const RoleSelection = () => {
   const [selectedRole, setSelectedRole] = useState("customer");
-  const { theme } = useTheme();
-  const isDarkMode = theme === "dark";
 
   return (
     <div className="flex flex-col gap-3">
@@ -16,23 +13,19 @@ export const RoleSelection = () => {
         Select Your Role
       </p>
       <div className="flex gap-4">
-        {/* Customer Role */}
         <Card
           isPressable
-          className={`w-1/2 p-3 rounded-xl border transition-all ${
-            selectedRole === "customer"
-              ? isDarkMode
-                ? "border-[var(--color-customer-dark-border)] bg-[var(--color-customer-dark-bg)] shadow-md"
-                : "border-[var(--color-customer-light-border)] bg-[var(--color-customer-light-bg)] shadow-md"
-              : isDarkMode
-                ? "border-[var(--color-default-dark-border)] bg-[var(--color-default-dark-bg)] hover:bg-[var(--color-default-dark-hover)]"
-                : "border-[var(--color-default-light-border)] bg-[var(--color-default-light-bg)] hover:bg-[var(--color-default-light-hover)]"
-          }`}
+          className={`w-1/2 p-3 rounded-xl border transition-all bg-background 
+            ${
+              selectedRole === "customer"
+                ? "border-2 border-blue-500 dark:border-blue-400 shadow-md scale-105"
+                : "border-gray-300 dark:border-gray-700"
+            }`}
           onPress={() => setSelectedRole("customer")}
         >
           <div className="flex flex-col items-center gap-1">
             <Icon
-              className={`text-2xl ${
+              className={`text-2xl transition-all ${
                 selectedRole === "customer"
                   ? "text-blue-500 dark:text-blue-400"
                   : "text-gray-500 dark:text-gray-400"
@@ -40,7 +33,7 @@ export const RoleSelection = () => {
               icon="ph:user"
             />
             <p
-              className={`text-sm font-semibold ${
+              className={`text-sm font-semibold transition-all ${
                 selectedRole === "customer"
                   ? "text-blue-500 dark:text-blue-400"
                   : "text-gray-600 dark:text-gray-300"
@@ -51,30 +44,26 @@ export const RoleSelection = () => {
           </div>
         </Card>
 
-        {/* Trainer Role */}
         <Card
           isPressable
-          className={`w-1/2 p-3 rounded-xl border transition-all ${
-            selectedRole === "trainer"
-              ? isDarkMode
-                ? "border-[var(--color-trainer-dark-border)] bg-[var(--color-trainer-dark-bg)] shadow-md"
-                : "border-[var(--color-trainer-light-border)] bg-[var(--color-trainer-light-bg)] shadow-md"
-              : isDarkMode
-                ? "border-[var(--color-default-dark-border)] bg-[var(--color-default-dark-bg)] hover:bg-[var(--color-default-dark-hover)]"
-                : "border-[var(--color-default-light-border)] bg-[var(--color-default-light-bg)] hover:bg-[var(--color-default-light-hover)]"
-          }`}
+          className={`w-1/2 p-3 rounded-xl border transition-all bg-background 
+            ${
+              selectedRole === "trainer"
+                ? "border-2 border-green-500 dark:border-green-400 shadow-md scale-105"
+                : "border-gray-300 dark:border-gray-700"
+            }`}
           onPress={() => setSelectedRole("trainer")}
         >
           <div className="flex flex-col items-center gap-1">
             <DumbbellIcon
-              className={`text-2xl ${
+              className={`text-2xl transition-all ${
                 selectedRole === "trainer"
                   ? "text-green-500 dark:text-green-400"
                   : "text-gray-500 dark:text-gray-400"
               }`}
             />
             <p
-              className={`text-sm font-semibold ${
+              className={`text-sm font-semibold transition-all ${
                 selectedRole === "trainer"
                   ? "text-green-500 dark:text-green-400"
                   : "text-gray-600 dark:text-gray-300"
