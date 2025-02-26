@@ -4,7 +4,7 @@ import { Button, Input, Checkbox, Link, Divider } from "@heroui/react";
 import { Icon } from "@iconify/react";
 
 import { RoleSelection } from "@/components/role-selection";
-import { Logo } from "@/components/icons";
+import { Logo, FacebookIcon2 } from "@/components/icons";
 
 export const SignUpForm = () => {
   const [isVisible, setIsVisible] = React.useState(false);
@@ -126,15 +126,6 @@ export const SignUpForm = () => {
             variant="bordered"
           />
           <RoleSelection />
-          {/* <RadioGroup
-            className="mt-2"
-            label="Select Your Role"
-            name="role"
-            orientation="horizontal"
-          >
-            <Radio value="customer">Customer</Radio>
-            <Radio value="trainer">Trainer</Radio>
-          </RadioGroup> */}
           <Checkbox isRequired className="py-4" size="sm">
             I agree with the&nbsp;
             <Link href="#" size="sm">
@@ -160,6 +151,14 @@ export const SignUpForm = () => {
             variant="bordered"
           >
             Sign Up with Google
+          </Button>
+        </div>
+        <div className="flex flex-col gap-2">
+          <Button
+            startContent={<FacebookIcon2 width={24} />} 
+            variant="bordered"
+          >
+            Sign Up with Facebook
           </Button>
         </div>
         <p className="text-center text-small">
