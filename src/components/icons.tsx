@@ -331,3 +331,24 @@ export const DumbbellIcon = (props: IconSvgProps) => (
     <path d="M6.404 12.768a2 2 0 1 1-2.829-2.829l1.768-1.767a2 2 0 1 1-2.828-2.829l2.828-2.828a2 2 0 1 1 2.829 2.828l1.767-1.768a2 2 0 1 1 2.829 2.829z" />
   </svg>
 );
+
+export const FacebookIcon2 = (props: IconSvgProps) => (
+  <svg
+    height="100"
+    viewBox="0 0 48 48"
+    width="100"
+    x="0px"
+    xmlns="http://www.w3.org/2000/svg"
+    y="0px"
+    {...props}
+  >
+    <path
+      d="M42,37c0,2.762-2.238,5-5,5H11c-2.761,0-5-2.238-5-5V11c0-2.762,2.239-5,5-5h26c2.762,0,5,2.238,5,5V37z"
+      fill="#3F51B5"
+    />
+    <path
+      d="M34.368,25H31v13h-5V25h-3v-4h3v-2.41c0.002-3.508,1.459-5.59,5.592-5.59H35v4h-2.287C31.104,17,31,17.6,31,18.723V21h4L34.368,25z"
+      fill="#FFF"
+    />
+  </svg>
+);
