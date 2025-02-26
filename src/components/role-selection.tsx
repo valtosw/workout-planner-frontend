@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Icon } from "@iconify/react";
 import { useTheme } from "@heroui/use-theme";
 import { Card } from "@heroui/react";
