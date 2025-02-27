@@ -1,5 +1,5 @@
 // "use client";
-import React from "react";
+import { useState } from "react";
 import { Button, Input, Checkbox, Link, Divider } from "@heroui/react";
 import { Icon } from "@iconify/react";
 
@@ -7,8 +7,14 @@ import { RoleSelection } from "@/components/role-selection";
 import { Logo, FacebookIcon2 } from "@/components/icons";
 
 export const SignUpForm = () => {
-  const [isVisible, setIsVisible] = React.useState(false);
-  const [isConfirmVisible, setIsConfirmVisible] = React.useState(false);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [isVisible, setIsVisible] = useState(false);
+  const [isConfirmVisible, setIsConfirmVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
   const toggleConfirmVisibility = () => setIsConfirmVisible(!isConfirmVisible);
@@ -23,10 +29,7 @@ export const SignUpForm = () => {
             Create an account to get started
           </p>
         </div>
-        <form
-          className="flex flex-col gap-3"
-          onSubmit={(e) => e.preventDefault()}
-        >
+        <form className="flex flex-col gap-3">
           <div className="flex gap-2">
             <Input
               isRequired
@@ -39,7 +42,17 @@ export const SignUpForm = () => {
               placeholder="Enter your first name"
               radius="md"
               type="text"
+              validate={() => {
+                if (
+                  firstName.match(
+                    "^[A-Z][a-zA-Z'’-]+(?: [A-Z][a-zA-Z'’-]+)*$",
+                  ) === null
+                ) {
+                  return "Please enter a valid first name.";
+                }
+              }}
               variant="bordered"
+              onChange={(e) => setFirstName(e.target.value)}
             />
 
             <Input
@@ -53,7 +66,17 @@ export const SignUpForm = () => {
               placeholder="Enter your last name"
               radius="md"
               type="text"
+              validate={() => {
+                if (
+                  lastName.match(
+                    "^[A-Z][a-zA-Z'’-]+(?: [A-Z][a-zA-Z'’-]+)*$",
+                  ) === null
+                ) {
+                  return "Please enter a valid first name.";
+                }
+              }}
               variant="bordered"
+              onChange={(e) => setLastName(e.target.value)}
             />
           </div>
           <Input
@@ -62,6 +85,7 @@ export const SignUpForm = () => {
               inputWrapper:
                 "data-[hover=true]:z-10 group-data-[focus-visible=true]:z-10",
             }}
+            errorMessage="Please enter a valid email address."
             label="Email Address"
             name="email"
             placeholder="Enter your email"
@@ -95,7 +119,13 @@ export const SignUpForm = () => {
             placeholder="Enter your password"
             radius="md"
             type={isVisible ? "text" : "password"}
+            validate={() => {
+              if (password.length < 8) {
+                return "Password must be at least 8 characters long.";
+              }
+            }}
             variant="bordered"
+            onChange={(e) => setPassword(e.target.value)}
           />
           <Input
             isRequired
@@ -123,7 +153,13 @@ export const SignUpForm = () => {
             placeholder="Confirm your password"
             radius="md"
             type={isConfirmVisible ? "text" : "password"}
+            validate={() => {
+              if (password !== confirmPassword && confirmPassword.length > 0) {
+                return "Passwords do not match.";
+              }
+            }}
             variant="bordered"
+            onChange={(e) => setConfirmPassword(e.target.value)}
           />
           <RoleSelection />
           <Checkbox isRequired className="py-4" size="sm">
@@ -136,7 +172,7 @@ export const SignUpForm = () => {
               Privacy Policy
             </Link>
           </Checkbox>
-          <Button color="primary" type="submit">
+          <Button color="primary" isLoading={isLoading} type="submit">
             Sign Up
           </Button>
         </form>
