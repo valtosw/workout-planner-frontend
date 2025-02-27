@@ -1,20 +1,18 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Button, Input, Checkbox, Link, Form, Divider } from "@heroui/react";
 import { Icon } from "@iconify/react";
 
 import { FacebookIcon2, Logo } from "@/components/icons";
 
 export const LoginForm = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   const [isVisible, setIsVisible] = React.useState(false);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    // console.log("handleSubmit");
-  };
 
   return (
     <div className="flex h-full w-full items-center justify-center">
@@ -26,11 +24,7 @@ export const LoginForm = () => {
             Log in to your account to continue
           </p>
         </div>
-        <Form
-          className="flex flex-col gap-3"
-          validationBehavior="native"
-          onSubmit={handleSubmit}
-        >
+        <Form className="flex flex-col gap-3" validationBehavior="native">
           <Input
             isRequired
             label="Email Address"
@@ -38,6 +32,7 @@ export const LoginForm = () => {
             placeholder="Enter your email"
             type="email"
             variant="bordered"
+            onChange={(e) => setEmail(e.target.value)}
           />
           <Input
             isRequired
@@ -61,6 +56,7 @@ export const LoginForm = () => {
             placeholder="Enter your password"
             type={isVisible ? "text" : "password"}
             variant="bordered"
+            onChange={(e) => setPassword(e.target.value)}
           />
           <div className="flex w-full items-center justify-between px-1 py-2">
             <Checkbox name="remember" size="sm">
