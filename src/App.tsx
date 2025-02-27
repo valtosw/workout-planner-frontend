@@ -8,6 +8,7 @@ import PricingPage from "@/pages/pricing";
 import BlogPage from "@/pages/blog";
 import AboutPage from "@/pages/about";
 import LoginPage from "@/pages/login";
+import { ROUTES } from "@/constants/routes";
 
 function App() {
   return (
@@ -17,9 +18,9 @@ function App() {
       <Route element={<PricingPage />} path="/pricing" />
       <Route element={<BlogPage />} path="/blog" />
       <Route element={<AboutPage />} path="/about" />
-      <Route element={<TrainersPage />} path="/trainers" />
-      <Route element={<SignupPage />} path="/signup" />
-      <Route element={<LoginPage />} path="/login" />
+      <Route element={<TrainersPage />} path={ROUTES.TRAINERS} />
+      <Route element={<SignupPage />} path={ROUTES.SIGNUP} />
+      <Route element={<LoginPage />} path={ROUTES.LOGIN} />
     </Routes>
   );
 }
