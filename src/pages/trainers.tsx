@@ -5,8 +5,8 @@ import TrainerBlock from "../components/trainer-block";
 import { Trainer } from "../types/trainer";
 import TrainerFilter from "../components/filter";
 
-import { getPostedTrainersList } from "@/api/trainerApi";
-import { getFilteredTrainers } from "@/api/trainerApi";
+import { getPostedTrainersList } from "@/api/trainer-api";
+import { getFilteredTrainers } from "@/api/trainer-api";
 import DefaultLayout from "@/layouts/default";
 
 const TrainersPage: React.FC = () => {
