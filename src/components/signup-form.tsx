@@ -155,7 +155,7 @@ export const SignUpForm = () => {
         </div>
         <div className="flex flex-col gap-2">
           <Button
-            startContent={<FacebookIcon2 width={24} />} 
+            startContent={<FacebookIcon2 width={24} />}
             variant="bordered"
           >
             Sign Up with Facebook
