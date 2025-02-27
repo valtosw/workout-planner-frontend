@@ -8,7 +8,7 @@ import {
   SelectItem,
 } from "@heroui/react";
 
-import { getFilteredTrainers, getMaxTrainingPrice } from "@/api/trainerApi";
+import { getFilteredTrainers, getMaxTrainingPrice } from "@/api/trainer-api";
 import { FilterProps } from "@/types/trainer";
 
 const TrainerFilter: React.FC<FilterProps> = ({ onFilter }) => {
