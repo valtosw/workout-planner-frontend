@@ -17,7 +17,8 @@ export const getFilteredTrainers = async (
   minPrice: number,
   maxPrice: number,
   isCertified: boolean | null,
-  location: string,
+  country: string | null,
+  city: string | null,
 ) => {
   try {
     const response = await axios.get("/Trainer/Filtered", {
@@ -26,7 +27,8 @@ export const getFilteredTrainers = async (
         minPrice,
         maxPrice,
         isCertified,
-        location,
+        country,
+        city,
       },
     });
 
@@ -39,6 +41,16 @@ export const getFilteredTrainers = async (
 export const getMaxTrainingPrice = async () => {
   try {
     const response = await axios.get("/Trainer/MaxPrice");
+
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getMaxExperience = async () => {
+  try {
+    const response = await axios.get("/Trainer/MaxExperience");
 
     return response.data;
   } catch (error) {
