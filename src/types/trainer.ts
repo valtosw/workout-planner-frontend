@@ -3,7 +3,8 @@ export interface Trainer {
   lastName: string;
   photoUrl: string;
   experience?: string;
-  location?: string;
+  countryId: number;
+  city?: string;
   placeOfWork?: string;
   trainingPrice: number;
   bio?: string;
@@ -26,7 +27,8 @@ export const MappedTrainers = (data: any[]): Trainer[] => {
     lastName: trainer.lastName,
     photoUrl: trainer.profilePicture,
     experience: trainer.experience,
-    location: trainer.location,
+    countryId: trainer.countryId,
+    city: trainer.city,
     placeOfWork: trainer.placeOfWork,
     trainingPrice: trainer.trainingPrice ?? 0,
     bio: trainer.bio,
