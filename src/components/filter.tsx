@@ -3,21 +3,40 @@ import {
   Slider,
   Input,
   Button,
-  NumberInput,
   Select,
   SelectItem,
+  Autocomplete,
+  AutocompleteItem,
 } from "@heroui/react";
 
-import { getFilteredTrainers, getMaxTrainingPrice } from "@/api/trainer-api";
+import {
+  getFilteredTrainers,
+  getMaxExperience,
+  getMaxTrainingPrice,
+} from "@/api/trainer-api";
 import { FilterProps } from "@/types/trainer";
+import { errorToast } from "@/types/toast";
+import { getCountryList } from "@/api/country-api";
 
 const TrainerFilter: React.FC<FilterProps> = ({ onFilter }) => {
-  const [experience, setExperience] = useState<number | null>(null);
+  const [experience, setExperience] = useState<number>(0);
+  const [country, setCountry] = useState<string | null>(null);
+  const [city, setCity] = useState<string | null>(null);
+  const [countries, setCountries] = useState<string[]>([]);
   const [minPrice, setMinPrice] = useState<number>(0);
-  const [maxPrice, setMaxPrice] = useState<number>(300);
+  const [maxPrice, setMaxPrice] = useState<number>(Number.MAX_SAFE_INTEGER);
   const [isCertified, setIsCertified] = useState<boolean | null>(null);
-  const [location, setLocation] = useState<string>("");
   const [maxPriceForSlider, setMaxPriceForSlider] = useState(0);
+  const [maxExperience, setMaxExperience] = useState(0);
+  const [selectedKey, setSelectedKey] = useState<React.Key | null>(null);
+
+  const onSelectionChange = (key: React.Key | null) => {
+    setSelectedKey(key);
+  };
+
+  const onInputChange = (value: string) => {
+    setCountry(value);
+  };
 
   const handleFilter = async () => {
     try {
@@ -26,7 +45,8 @@ const TrainerFilter: React.FC<FilterProps> = ({ onFilter }) => {
         minPrice,
         maxPrice,
         isCertified,
-        location,
+        country,
+        city,
       );
 
       onFilter({
@@ -34,10 +54,11 @@ const TrainerFilter: React.FC<FilterProps> = ({ onFilter }) => {
         minPrice,
         maxPrice,
         isCertified,
-        location,
+        country,
+        city,
       });
-    } catch (error) {
-      alert(error);
+    } catch (error: any) {
+      errorToast(error.message);
     }
   };
 
@@ -47,12 +68,40 @@ const TrainerFilter: React.FC<FilterProps> = ({ onFilter }) => {
         const maxPrice = await getMaxTrainingPrice();
 
         setMaxPriceForSlider(maxPrice);
-      } catch (error) {
-        alert(error);
+      } catch (error: any) {
+        errorToast(error.message);
       }
     };
 
     fetchMaxPrice();
+  }, []);
+
+  useEffect(() => {
+    const fetchMaxExperience = async () => {
+      try {
+        const maxExperience = await getMaxExperience();
+
+        setMaxExperience(maxExperience);
+      } catch (error: any) {
+        errorToast(error.message);
+      }
+    };
+
+    fetchMaxExperience();
+  }, []);
+
+  useEffect(() => {
+    const fetchCountries = async () => {
+      try {
+        const countries = await getCountryList();
+
+        setCountries(countries);
+      } catch (error: any) {
+        errorToast(error.message);
+      }
+    };
+
+    fetchCountries();
   }, []);
 
   const resetFilter = () => {
@@ -60,7 +109,8 @@ const TrainerFilter: React.FC<FilterProps> = ({ onFilter }) => {
     setMaxPrice(maxPriceForSlider);
     setExperience(0);
     setIsCertified(null);
-    setLocation("");
+    setCountry(null);
+    setCity(null);
   };
 
   return (
@@ -68,12 +118,14 @@ const TrainerFilter: React.FC<FilterProps> = ({ onFilter }) => {
       <h2 className="text-lg font-semibold">Filter Trainers</h2>
       <div className="flex flex-col md:flex-row items-stretch md:items-center gap-4">
         <Slider
-          color="secondary"
+          color="primary"
           formatOptions={{ style: "currency", currency: "USD" }}
           label="Price Range"
           maxValue={maxPriceForSlider}
           minValue={0}
+          showTooltip={true}
           step={1}
+          tooltipValueFormatOptions={{ style: "currency", currency: "USD" }}
           value={[minPrice, maxPrice]}
           onChange={(val: number | number[]) => {
             if (Array.isArray(val)) {
@@ -82,12 +134,18 @@ const TrainerFilter: React.FC<FilterProps> = ({ onFilter }) => {
             }
           }}
         />
-        <NumberInput
-          label="Experience"
-          maxValue={70}
+        <Slider
+          color="primary"
+          label="Minimum Experience (years)"
+          maxValue={maxExperience}
           minValue={0}
-          placeholder="Minimum number of years"
-          onValueChange={setExperience}
+          step={1}
+          value={experience}
+          onChange={(val: number | number[]) => {
+            if (typeof val === "number") {
+              setExperience(val);
+            }
+          }}
         />
         <Select
           label="Trainer Certification"
@@ -112,16 +170,31 @@ const TrainerFilter: React.FC<FilterProps> = ({ onFilter }) => {
           <SelectItem key="true">Certified</SelectItem>
           <SelectItem key="false">Not Certified</SelectItem>
         </Select>
+        <Autocomplete
+          isVirtualized
+          defaultItems={countries.map((country) => ({
+            label: country,
+            value: country,
+          }))}
+          label="Select a country"
+          placeholder="Select..."
+          onInputChange={onInputChange}
+          onSelectionChange={onSelectionChange}
+        >
+          {(item) => (
+            <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>
+          )}
+        </Autocomplete>
         <Input
-          label="Location"
-          placeholder="Enter location"
-          value={location}
-          onChange={(e) => setLocation(e.target.value)}
+          label="City"
+          placeholder="Enter city"
+          value={city!}
+          onChange={(e) => setCity(e.target.value)}
         />
         <div className="flex flex-col md:flex-row gap-2 md:w-auto">
           <Button
             className="w-full md:w-auto"
-            color="secondary"
+            color="primary"
             onPress={handleFilter}
           >
             Apply
