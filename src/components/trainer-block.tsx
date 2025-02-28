@@ -4,6 +4,7 @@ import { Button } from "@heroui/react";
 import { Image } from "@heroui/react";
 import { Modal, ModalBody, ModalFooter, ModalHeader } from "@heroui/react";
 import { Link } from "@heroui/react";
+import { useEffect, useState } from "react";
 
 import {
   MoneyIcon,
@@ -16,9 +17,26 @@ import {
 } from "./icons";
 
 import { TrainerBlockProps } from "@/types/trainer";
+import { getCountryName } from "@/api/country-api";
+import { errorToast } from "@/types/toast";
 
 const TrainerBlock: React.FC<TrainerBlockProps> = ({ trainer }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [countryName, setCountryName] = useState<string>("");
+
+  useEffect(() => {
+    const fetchCountryName = async () => {
+      try {
+        const countryName = await getCountryName(trainer.countryId);
+
+        setCountryName(countryName);
+      } catch (error: any) {
+        errorToast(error.message);
+      }
+    };
+
+    fetchCountryName();
+  }, [trainer.countryId]);
 
   return (
     <Card className="max-w-sm rounded-lg shadow-lg">
@@ -41,7 +59,7 @@ const TrainerBlock: React.FC<TrainerBlockProps> = ({ trainer }) => {
         </div>
         <div className="text-sm text-gray-500 flex items-center">
           <LocationIcon className="w-4 h-4 mr-1" />
-          Location: {trainer.location || "N/A"}
+          Location: {`${trainer.city}, ${countryName}` || "N/A"}
         </div>
         <div className="text-sm text-gray-500 flex items-center">
           <PlaceOfWorkIcon className="w-4 h-4 mr-1" />
