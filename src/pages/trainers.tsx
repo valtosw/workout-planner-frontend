@@ -4,9 +4,9 @@ import { Divider, CircularProgress } from "@heroui/react";
 import TrainerBlock from "../components/trainer-block";
 import { Trainer } from "../types/trainer";
 import TrainerFilter from "../components/filter";
+import { errorToast } from "../types/toast";
 
-import { getPostedTrainersList } from "@/api/trainer-api";
-import { getFilteredTrainers } from "@/api/trainer-api";
+import { getPostedTrainersList, getFilteredTrainers } from "@/api/trainer-api";
 import DefaultLayout from "@/layouts/default";
 
 const TrainersPage: React.FC = () => {
@@ -19,8 +19,8 @@ const TrainersPage: React.FC = () => {
         const trainers = await getPostedTrainersList();
 
         setTrainers(trainers);
-      } catch (error) {
-        alert(error);
+      } catch (error: any) {
+        errorToast(error.message);
       } finally {
         setIsLoading(false);
       }
@@ -34,7 +34,11 @@ const TrainersPage: React.FC = () => {
     minPrice: number;
     maxPrice: number;
     isCertified: boolean | null;
-    location: string;
+    country: string | null;
+    city: string | null;
+    isNear: boolean;
+    latitude: number | null;
+    longitude: number | null;
   }) => {
     setIsLoading(true);
     try {
@@ -43,12 +47,13 @@ const TrainersPage: React.FC = () => {
         filters.minPrice,
         filters.maxPrice,
         filters.isCertified,
-        filters.location,
+        filters.country,
+        filters.city,
       );
 
       setTrainers(filteredTrainers);
-    } catch (error) {
-      alert(error);
+    } catch (error: any) {
+      errorToast(error.message);
     } finally {
       setIsLoading(false);
     }
