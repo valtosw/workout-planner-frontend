@@ -88,7 +88,7 @@ export const LoginForm = () => {
             startContent={<FacebookIcon2 width={24} />}
             variant="bordered"
           >
-            Sign Up with Facebook
+            Continue with Facebook
           </Button>
         </div>
         <p className="text-center text-small">
