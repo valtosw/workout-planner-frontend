@@ -8,6 +8,7 @@ import PricingPage from "@/pages/pricing";
 import BlogPage from "@/pages/blog";
 import AboutPage from "@/pages/about";
 import LoginPage from "@/pages/login";
+import WorkoutPlansPage from "@/pages/workout-plans";
 import { ROUTES } from "@/constants/routes";
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
       <Route element={<BlogPage />} path="/blog" />
       <Route element={<AboutPage />} path="/about" />
       <Route element={<TrainersPage />} path={ROUTES.TRAINERS} />
+      <Route element={<WorkoutPlansPage />} path={ROUTES.WORKOUT_PLANS} />
       <Route element={<SignupPage />} path={ROUTES.SIGNUP} />
       <Route element={<LoginPage />} path={ROUTES.LOGIN} />
     </Routes>
