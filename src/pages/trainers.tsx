@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { Divider, CircularProgress } from "@heroui/react";
 
-import TrainerBlock from "../components/trainer-block";
+import TrainerBlock from "../components/trainer-components/trainer-block";
 import { Trainer } from "../types/trainer";
-import TrainerFilter from "../components/filter";
+import TrainerFilter from "../components/filter-components/filter";
 import { errorToast } from "../types/toast";
 
-import { getPostedTrainersList, getFilteredTrainers } from "@/api/trainer-api";
+import { getPostedTrainersList, getFilteredTrainers } from "@/api/model-apis/trainer-api";
 import DefaultLayout from "@/layouts/default";
 
 const TrainersPage: React.FC = () => {
