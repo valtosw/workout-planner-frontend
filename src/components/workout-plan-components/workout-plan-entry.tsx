@@ -18,7 +18,6 @@ interface WorkoutPlanEntryProps {
 export const WorkoutPlanEntry: React.FC<WorkoutPlanEntryProps> = ({
   muscleGroups,
 }) => {
-  //   const [muscleGroups, setMuscleGroups] = useState<string[]>([]);
   const [exercises, setExercises] = useState<string[]>([]);
   const [isMuscleGroupSelected, setIsMuscleGroupSelected] =
     useState<boolean>(false);
