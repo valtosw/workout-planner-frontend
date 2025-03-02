@@ -1,6 +1,6 @@
 import { ToastProvider } from "@heroui/react";
 
-import { Navbar } from "../components/navbar";
+import { Navbar } from "../components/navbar-components/navbar";
 
 export default function DefaultLayout({
   children,

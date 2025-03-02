@@ -1,6 +1,6 @@
 import { Link } from "@heroui/link";
 
-import { LandingNavbar } from "@/components/landing-navbar";
+import { LandingNavbar } from "@/components/navbar-components/landing-navbar";
 
 export default function LandingDefaultLayout({
   children,
