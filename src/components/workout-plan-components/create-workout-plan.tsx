@@ -10,13 +10,22 @@ import {
   ModalFooter,
   ModalHeader,
   useDisclosure,
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerBody,
+  DrawerFooter,
+  Spacer,
 } from "@heroui/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { CheckIcon, EditIcon, PlusIcon } from "../icons";
+
+import { WorkoutPlanEntry } from "./workout-plan-entry";
+
 import { errorToast } from "@/types/toast";
 import { getMuscleGroupList } from "@/api/model-apis/muscle-group-api";
-import { WorkoutPlanEntry } from "./workout-plan-entry";
+import { WorkoutPlan } from "./workout-plan-card";
 
 export const CreateWorkoutPlanCard = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -60,56 +69,64 @@ export const CreateWorkoutPlanCard = () => {
         </span>
       </Card>
 
-      <Modal
-        isDismissable={true}
-        isKeyboardDismissDisabled={true}
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-      >
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <div className="flex items-center gap-2">
-                {isEditing ? (
-                  <Input
-                    className="pl-5 py-2 w-3/4 rounded-md"
-                    maxLength={30}
-                    minLength={3}
-                    type="text"
-                    value={workoutPlanName}
-                    onChange={(e) => setWorkoutPlanName(e.target.value)}
-                  />
-                ) : (
-                  <ModalHeader className="flex flex-col gap-1 pr-1">
-                    {workoutPlanName}
-                  </ModalHeader>
-                )}
+      {isOpen && (
+        <Drawer
+          hideCloseButton
+          classNames={{
+            base: "data-[placement=right]:sm:m-2 data-[placement=left]:sm:m-2 rounded-medium overflow-visible",
+          }}
+          isOpen={isOpen}
+          onOpenChange={onOpenChange}
+        >
+          <DrawerContent>
+            {(onClose) => (
+              <>
+                <div className="flex items-center gap-2">
+                  {isEditing ? (
+                    <Input
+                      className="pl-5 py-2 w-3/4 rounded-md"
+                      maxLength={30}
+                      minLength={3}
+                      type="text"
+                      value={workoutPlanName}
+                      onChange={(e) => setWorkoutPlanName(e.target.value)}
+                    />
+                  ) : (
+                    <DrawerHeader className="flex flex-col gap-1 pr-1">
+                      {workoutPlanName}
+                    </DrawerHeader>
+                  )}
 
-                <Button
-                  isIconOnly
-                  className="rounded-xl ml-0"
-                  color="default"
-                  variant="flat"
-                  onPress={() => setIsEditing(!isEditing)}
-                >
-                  {isEditing ? <CheckIcon size={14} /> : <EditIcon size={14} />}
-                </Button>
-              </div>
-              <ModalBody>
-                <WorkoutPlanEntry muscleGroups={["Chest"]} />
-              </ModalBody>
-              <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
-                  Close
-                </Button>
-                <Button color="primary" onPress={onClose}>
-                  Save
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
+                  <Button
+                    isIconOnly
+                    className="rounded-xl ml-0"
+                    color="default"
+                    variant="flat"
+                    onPress={() => setIsEditing(!isEditing)}
+                  >
+                    {isEditing ? (
+                      <CheckIcon size={14} />
+                    ) : (
+                      <EditIcon size={14} />
+                    )}
+                  </Button>
+                </div>
+                <DrawerBody>
+                  <WorkoutPlanEntry muscleGroups={muscleGroups} />
+                </DrawerBody>
+                <DrawerFooter>
+                  <Button color="danger" variant="light" onPress={onClose}>
+                    Close
+                  </Button>
+                  <Button color="primary" onPress={onClose}>
+                    Save
+                  </Button>
+                </DrawerFooter>
+              </>
+            )}
+          </DrawerContent>
+        </Drawer>
+      )}
     </>
   );
 };
