@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 import DefaultLayout from "@/layouts/default";
-import { CreateWorkoutPlanCard } from "@/components/create-workout-plan";
+import { CreateWorkoutPlanCard } from "@/components/workout-plan-components/create-workout-plan";
 
 const WorkoutPlansPage: React.FC = () => {
   return (
