@@ -1,0 +1,215 @@
+import { useState, useEffect } from "react";
+import {
+  Slider,
+  Input,
+  Button,
+  Select,
+  SelectItem,
+  Autocomplete,
+  AutocompleteItem,
+} from "@heroui/react";
+
+import {
+  getFilteredTrainers,
+  getMaxExperience,
+  getMaxTrainingPrice,
+} from "@/api/model-apis/trainer-api";
+import { FilterProps } from "@/types/trainer";
+import { errorToast } from "@/types/toast";
+import { getCountryList } from "@/api/model-apis/country-api";
+
+const TrainerFilter: React.FC<FilterProps> = ({ onFilter }) => {
+  const [experience, setExperience] = useState<number>(0);
+  const [country, setCountry] = useState<string | null>(null);
+  const [city, setCity] = useState<string | null>(null);
+  const [countries, setCountries] = useState<string[]>([]);
+  const [minPrice, setMinPrice] = useState<number>(0);
+  const [maxPrice, setMaxPrice] = useState<number>(Number.MAX_SAFE_INTEGER);
+  const [isCertified, setIsCertified] = useState<boolean | null>(null);
+  const [maxPriceForSlider, setMaxPriceForSlider] = useState(0);
+  const [maxExperience, setMaxExperience] = useState(0);
+  const [selectedKey, setSelectedKey] = useState<React.Key | null>(null);
+
+  const onSelectionChange = (key: React.Key | null) => {
+    setSelectedKey(key);
+  };
+
+  const onInputChange = (value: string) => {
+    setCountry(value);
+  };
+
+  const handleFilter = async () => {
+    try {
+      await getFilteredTrainers(
+        experience,
+        minPrice,
+        maxPrice,
+        isCertified,
+        country,
+        city,
+      );
+
+      onFilter({
+        experience,
+        minPrice,
+        maxPrice,
+        isCertified,
+        country,
+        city,
+      });
+    } catch (error: any) {
+      errorToast(error.message);
+    }
+  };
+
+  useEffect(() => {
+    const fetchMaxPrice = async () => {
+      try {
+        const maxPrice = await getMaxTrainingPrice();
+
+        setMaxPriceForSlider(maxPrice);
+      } catch (error: any) {
+        errorToast(error.message);
+      }
+    };
+
+    fetchMaxPrice();
+  }, []);
+
+  useEffect(() => {
+    const fetchMaxExperience = async () => {
+      try {
+        const maxExperience = await getMaxExperience();
+
+        setMaxExperience(maxExperience);
+      } catch (error: any) {
+        errorToast(error.message);
+      }
+    };
+
+    fetchMaxExperience();
+  }, []);
+
+  useEffect(() => {
+    const fetchCountries = async () => {
+      try {
+        const countries = await getCountryList();
+
+        setCountries(countries);
+      } catch (error: any) {
+        errorToast(error.message);
+      }
+    };
+
+    fetchCountries();
+  }, []);
+
+  const resetFilter = () => {
+    setMinPrice(0);
+    setMaxPrice(maxPriceForSlider);
+    setExperience(0);
+    setIsCertified(null);
+    setCountry(null);
+    setCity(null);
+  };
+
+  return (
+    <div className="p-4 rounded-lg">
+      <h2 className="text-lg font-semibold">Filter Trainers</h2>
+      <div className="flex flex-col md:flex-row items-stretch md:items-center gap-4">
+        <Slider
+          color="primary"
+          formatOptions={{ style: "currency", currency: "USD" }}
+          label="Price Range"
+          maxValue={maxPriceForSlider}
+          minValue={0}
+          showTooltip={true}
+          step={1}
+          tooltipValueFormatOptions={{ style: "currency", currency: "USD" }}
+          value={[minPrice, maxPrice]}
+          onChange={(val: number | number[]) => {
+            if (Array.isArray(val)) {
+              setMinPrice(val[0]);
+              setMaxPrice(val[1]);
+            }
+          }}
+        />
+        <Slider
+          color="primary"
+          label="Minimum Experience (years)"
+          maxValue={maxExperience}
+          minValue={0}
+          step={1}
+          value={experience}
+          onChange={(val: number | number[]) => {
+            if (typeof val === "number") {
+              setExperience(val);
+            }
+          }}
+        />
+        <Select
+          label="Trainer Certification"
+          selectedKeys={[
+            isCertified === true
+              ? "true"
+              : isCertified === false
+                ? "false"
+                : "null",
+          ]}
+          onChange={(e) =>
+            setIsCertified(
+              e.target.value === "true"
+                ? true
+                : e.target.value === "false"
+                  ? false
+                  : null,
+            )
+          }
+        >
+          <SelectItem key="null">All</SelectItem>
+          <SelectItem key="true">Certified</SelectItem>
+          <SelectItem key="false">Not Certified</SelectItem>
+        </Select>
+        <Autocomplete
+          isVirtualized
+          defaultItems={countries.map((country) => ({
+            label: country,
+            value: country,
+          }))}
+          label="Select a country"
+          placeholder="Select..."
+          onInputChange={onInputChange}
+          onSelectionChange={onSelectionChange}
+        >
+          {(item) => (
+            <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>
+          )}
+        </Autocomplete>
+        <Input
+          label="City"
+          placeholder="Enter city"
+          value={city!}
+          onChange={(e) => setCity(e.target.value)}
+        />
+        <div className="flex flex-col md:flex-row gap-2 md:w-auto">
+          <Button
+            className="w-full md:w-auto"
+            color="primary"
+            onPress={handleFilter}
+          >
+            Apply
+          </Button>
+          <Button
+            className="w-full md:w-auto"
+            color="danger"
+            onPress={resetFilter}
+          >
+            Reset
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default TrainerFilter;
