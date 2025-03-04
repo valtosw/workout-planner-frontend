@@ -43,21 +43,39 @@ interface WorkoutPlanProps {
 
 const EntryToDisplay: React.FC<{ entry: WorkoutPlanEntry }> = ({ entry }) => {
   return (
-    <div className="flex items-center justify-between bg-gray-900 text-white p-4 rounded-lg shadow-lg w-full gap-4">
-      <span className="font-medium text-sm text-blue-400 whitespace-nowrap">
-        {entry.muscleGroup}
-      </span>
-      <Tooltip content={entry.exercise}>
-        <span className="text-sm flex-1 text-center truncate font-semibold text-gray-300">
-          {entry.exercise}
+    <div className="flex flex-col bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-4 rounded-xl shadow-md w-full gap-2">
+      <div className="flex items-center gap-3">
+        <span className="font-semibold text-blue-600 dark:text-blue-400 text-xs px-2 py-1 bg-gray-200 dark:bg-gray-800 rounded-lg">
+          {entry.muscleGroup}
         </span>
-      </Tooltip>
-      <span className="text-gray-400 text-sm font-medium">
-        {entry.sets} x {entry.reps}
-      </span>
-      <span className="text-green-400 font-semibold text-sm ml-2">
-        {entry.weight} kg
-      </span>
+        <Tooltip content={entry.exercise}>
+          <span className="text-sm font-medium text-gray-800 dark:text-gray-300 truncate">
+            {entry.exercise}
+          </span>
+        </Tooltip>
+      </div>
+      <div className="grid grid-cols-3 gap-4 text-center">
+        <div className="flex flex-col items-center">
+          <span className="text-gray-600 dark:text-gray-400 text-xs">Sets</span>
+          <span className="font-semibold text-gray-900 dark:text-gray-100 text-sm">
+            {entry.sets}
+          </span>
+        </div>
+        <div className="flex flex-col items-center">
+          <span className="text-gray-600 dark:text-gray-400 text-xs">Reps</span>
+          <span className="font-semibold text-gray-900 dark:text-gray-100 text-sm">
+            {entry.reps}
+          </span>
+        </div>
+        <div className="flex flex-col items-center">
+          <span className="text-gray-600 dark:text-gray-400 text-xs">
+            Weight
+          </span>
+          <span className="font-semibold text-green-600 dark:text-green-400 text-sm">
+            {entry.weight} kg
+          </span>
+        </div>
+      </div>
     </div>
   );
 };
