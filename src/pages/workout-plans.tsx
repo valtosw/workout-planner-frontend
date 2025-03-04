@@ -14,7 +14,7 @@ const WorkoutPlansPage: React.FC = () => {
         <CreateWorkoutPlanCard />
         <Spacer x={4} />
 
-        <WorkoutPlanList userId="08d6933d-f7a8-11ef-a1a6-98fa9b267c16" />
+        <WorkoutPlanList userId="08d2316e-f7a8-11ef-a1a6-98fa9b267c16" />
       </div>
     </DefaultLayout>
   );
