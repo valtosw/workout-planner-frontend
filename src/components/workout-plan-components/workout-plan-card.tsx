@@ -8,38 +8,7 @@ import {
   Tooltip,
 } from "@heroui/react";
 
-export interface WorkoutPlan {
-  name: string;
-  createdBy: CreatedBy;
-  assignedTo: AssignedTo | null;
-  workoutPlanEntries: WorkoutPlanEntry[];
-}
-
-interface WorkoutPlanEntry {
-  reps: number;
-  sets: number;
-  weight: number;
-  exercise: string;
-  muscleGroup: string;
-}
-
-interface CreatedBy {
-  firstName: string;
-  lastName: string;
-  email: string;
-  profilePicture: string | null;
-}
-
-interface AssignedTo {
-  firstName: string;
-  lastName: string;
-  email: string;
-  profilePicture: string | null;
-}
-
-interface WorkoutPlanProps {
-  workoutPlan: WorkoutPlan;
-}
+import { WorkoutPlanEntry, WorkoutPlanProps } from "../../types/workout-plan";
 
 const EntryToDisplay: React.FC<{ entry: WorkoutPlanEntry }> = ({ entry }) => {
   return (
