@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 
-import { WorkoutPlan } from "./workout-plan-card";
+import {WorkoutPlan} from "./workout-plan-card";
 
 import { getUserWorkoutPlans } from "@/api/model-apis/workout-plan-api";
 
 interface WorkoutPlanListProps {
-  userId: string;
+  userId: string | undefined;
 }
 
 export const WorkoutPlanList: React.FC<WorkoutPlanListProps> = ({ userId }) => {
@@ -13,7 +13,7 @@ export const WorkoutPlanList: React.FC<WorkoutPlanListProps> = ({ userId }) => {
 
   useEffect(() => {
     const fetchWorkoutPlans = async () => {
-      const data = await getUserWorkoutPlans(userId);
+      const data = await getUserWorkoutPlans(userId || "");
 
       setWorkoutPlans(data);
     };
