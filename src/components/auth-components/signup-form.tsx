@@ -3,10 +3,62 @@ import { useState } from "react";
 import { Button, Input, Checkbox, Link, Divider } from "@heroui/react";
 import { Icon } from "@iconify/react";
 
+import { useForm, SubmitHandler } from "react-hook-form";
 import { RoleSelection } from "@/components/auth-components/role-selection";
 import { Logo, FacebookIcon2 } from "@/components/icons";
+import useFeedback from "@/hooks/useFeedback";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "@/constants/routes";
+
+interface RegisterRequest {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  confirmPassword?: string;
+  role: string;
+}
+
+interface RegisterResponse {
+  message: string;
+}
 
 export const SignUpForm = () => {
+  const { control, handleSubmit, setValue, watch } = useForm<RegisterRequest>({
+    mode: "onChange",
+    defaultValues: {
+      role: "customer",
+    },
+  });
+
+  const role = watch("role", "customer");
+
+  const navigate = useNavigate();
+
+  const { feedback, setFeedback } = useFeedback();
+
+  const onSubmit: SubmitHandler<RegisterRequest> = (data) => {
+    sessionStorage.setItem("registeredEmail", data.email);
+    fetch("/Auth/Register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((data: RegisterResponse) => {
+        sessionStorage.setItem("registeredEmail", data.message);
+        navigate(ROUTES.LOGIN);
+      })
+      .catch((error) => {
+        setFeedback({
+          message: error.message || "Failed to sign up. Please try again.",
+          intent: "error",
+        });
+      });
+  };
+
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
@@ -29,7 +81,7 @@ export const SignUpForm = () => {
             Create an account to get started
           </p>
         </div>
-        <form className="flex flex-col gap-3">
+        <form className="flex flex-col gap-3" onSubmit={handleSubmit(onSubmit)}>
           <div className="flex gap-2">
             <Input
               isRequired
