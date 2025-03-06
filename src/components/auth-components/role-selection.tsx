@@ -4,9 +4,7 @@ import { Card } from "@heroui/react";
 
 import { DumbbellIcon } from "@/components/icons";
 
-export const RoleSelection = () => {
-  const [selectedRole, setSelectedRole] = useState("customer");
-
+export const RoleSelection = ({ selectedRole, onRoleChange }: { selectedRole: string, onRoleChange: (role: string) => void }) => {
   return (
     <div className="flex flex-col gap-3">
       <p className="text-sm font-medium text-gray-600 dark:text-gray-300">
@@ -21,7 +19,7 @@ export const RoleSelection = () => {
                 ? "border-2 border-blue-500 dark:border-blue-400 shadow-md scale-105"
                 : "border-gray-300 dark:border-gray-700"
             }`}
-          onPress={() => setSelectedRole("customer")}
+          onPress={() => onRoleChange("customer")}
         >
           <div className="flex flex-col items-center gap-1">
             <Icon
@@ -52,7 +50,7 @@ export const RoleSelection = () => {
                 ? "border-2 border-green-500 dark:border-green-400 shadow-md scale-105"
                 : "border-gray-300 dark:border-gray-700"
             }`}
-          onPress={() => setSelectedRole("trainer")}
+          onPress={() => onRoleChange("trainer")}
         >
           <div className="flex flex-col items-center gap-1">
             <DumbbellIcon
