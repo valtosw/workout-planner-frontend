@@ -21,7 +21,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ allowedRoles }) => {
 
   const role = decoded?.role || "";
 
-  return role === "admin" || allowedRoles.includes(role || "any") ? (
+  return allowedRoles.includes(role) ? (
     <Outlet />
   ) : auth?.id ? (
     <Navigate replace state={{ from: location }} to={ROUTES.UNAUTHORIZED} />
