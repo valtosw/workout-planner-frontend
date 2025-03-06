@@ -3,16 +3,57 @@
 import React, { useState } from "react";
 import { Button, Input, Checkbox, Link, Form, Divider } from "@heroui/react";
 import { Icon } from "@iconify/react";
+import { jwtDecode } from "jwt-decode";
+import { useForm, SubmitHandler } from "react-hook-form";
 
 import { FacebookIcon2, Logo } from "@/components/icons";
+import useAuth from "@/hooks/useAuth";
+import { errorToast } from "@/types/toast";
+import { axiosPrivate } from "@/api/axios";
+import { ROUTES } from "@/constants/routes";
+
+interface LoginRequest {
+  email: string;
+  password: string;
+}
 
 export const LoginForm = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
   const [isVisible, setIsVisible] = React.useState(false);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
+
+  const { setAuth, persist, togglePersist } = useAuth();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginRequest>();
+
+  const [loading, setLoading] = useState(false);
+
+  const onSubmit: SubmitHandler<LoginRequest> = async (data) => {
+    setLoading(true);
+    try {
+      const response = await axiosPrivate.post("/Auth/Login", data);
+
+      const { accessToken } = response.data;
+
+      const userAuth = {
+        accessToken,
+        email: jwtDecode<{ email: string }>(accessToken).email,
+        id: jwtDecode<{ nameid: string }>(accessToken).nameid,
+      };
+
+      setAuth(userAuth);
+      localStorage.setItem("auth", JSON.stringify(userAuth));
+
+      window.location.href = ROUTES.TRAINERS;
+    } catch (error: any) {
+      errorToast(error.response?.data?.message || "Login failed");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="flex h-full w-full items-center justify-center">
@@ -24,15 +65,19 @@ export const LoginForm = () => {
             Log in to your account to continue
           </p>
         </div>
-        <Form className="flex flex-col gap-3" validationBehavior="native">
+        <Form
+          className="flex flex-col gap-3"
+          validationBehavior="native"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <Input
             isRequired
             label="Email Address"
-            name="email"
             placeholder="Enter your email"
             type="email"
             variant="bordered"
-            onChange={(e) => setEmail(e.target.value)}
+            {...register("email", { required: "Email is required" })}
+            errorMessage={errors.email?.message}
           />
           <Input
             isRequired
@@ -52,21 +97,31 @@ export const LoginForm = () => {
               </button>
             }
             label="Password"
-            name="password"
             placeholder="Enter your password"
             type={isVisible ? "text" : "password"}
             variant="bordered"
-            onChange={(e) => setPassword(e.target.value)}
+            {...register("password", { required: "Password is required" })}
+            errorMessage={errors.password?.message}
           />
           <div className="flex w-full items-center justify-between px-1 py-2">
-            <Checkbox name="remember" size="sm">
+            <Checkbox
+              checked={persist}
+              name="remember"
+              size="sm"
+              onChange={togglePersist}
+            >
               Remember me
             </Checkbox>
             <Link className="text-default-500" href="#" size="sm">
               Forgot password?
             </Link>
           </div>
-          <Button className="w-full" color="primary" type="submit">
+          <Button
+            className="w-full"
+            color="primary"
+            isLoading={loading}
+            type="submit"
+          >
             Sign In
           </Button>
         </Form>
