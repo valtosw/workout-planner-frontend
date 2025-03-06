@@ -3,12 +3,12 @@ import { useState } from "react";
 import { Button, Input, Checkbox, Link, Divider } from "@heroui/react";
 import { Icon } from "@iconify/react";
 
-import { useForm, SubmitHandler } from "react-hook-form";
 import { RoleSelection } from "@/components/auth-components/role-selection";
 import { Logo, FacebookIcon2 } from "@/components/icons";
 import useFeedback from "@/hooks/useFeedback";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "@/constants/routes";
+import axios from "@/api/axios";
 
 interface RegisterRequest {
   firstName: string;
@@ -24,52 +24,94 @@ interface RegisterResponse {
 }
 
 export const SignUpForm = () => {
-  const { control, handleSubmit, setValue, watch } = useForm<RegisterRequest>({
-    mode: "onChange",
-    defaultValues: {
-      role: "customer",
-    },
+  const [formData, setFormData] = useState<RegisterRequest>({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    role: "customer",
   });
 
-  const role = watch("role", "customer");
-
-  const navigate = useNavigate();
-
-  const { feedback, setFeedback } = useFeedback();
-
-  const onSubmit: SubmitHandler<RegisterRequest> = (data) => {
-    sessionStorage.setItem("registeredEmail", data.email);
-    fetch("/Auth/Register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
-      .then((data: RegisterResponse) => {
-        sessionStorage.setItem("registeredEmail", data.message);
-        navigate(ROUTES.LOGIN);
-      })
-      .catch((error) => {
-        setFeedback({
-          message: error.message || "Failed to sign up. Please try again.",
-          intent: "error",
-        });
-      });
-  };
-
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [isVisible, setIsVisible] = useState(false);
   const [isConfirmVisible, setIsConfirmVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
   const toggleVisibility = () => setIsVisible(!isVisible);
   const toggleConfirmVisibility = () => setIsConfirmVisible(!isConfirmVisible);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setErrors({ ...errors, [e.target.name]: "" });
+  };
+
+  const validate = (): boolean => {
+    let newErrors: { [key: string]: string } = {};
+
+    if (
+      !formData.firstName.match(/^[A-Z][a-zA-Z'’-]+(?: [A-Z][a-zA-Z'’-]+)*$/)
+    ) {
+      newErrors.firstName = "Please enter a valid first name.";
+    }
+
+    if (
+      !formData.lastName.match(/^[A-Z][a-zA-Z'’-]+(?: [A-Z][a-zA-Z'’-]+)*$/)
+    ) {
+      newErrors.lastName = "Please enter a valid last name.";
+    }
+
+    if (!formData.email.match(/^\S+@\S+\.\S+$/)) {
+      newErrors.email = "Please enter a valid email address.";
+    }
+
+    if (formData.password.length < 8) {
+      newErrors.password = "Password must be at least 8 characters long.";
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match.";
+    }
+
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!validate()) return;
+
+    setIsLoading(true);
+    setSuccessMessage("");
+
+    try {
+      const response = await axios.post<RegisterResponse>(
+        "/Auth/Register",
+        formData,
+      );
+
+      setSuccessMessage(
+        response.data.message || "Registration successful! Please log in.",
+      );
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        role: "customer",
+      });
+    } catch (error: any) {
+      setErrors({
+        general: error.response?.data?.message || "Registration failed.",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="flex h-full w-full items-center justify-center">
@@ -81,7 +123,7 @@ export const SignUpForm = () => {
             Create an account to get started
           </p>
         </div>
-        <form className="flex flex-col gap-3" onSubmit={handleSubmit(onSubmit)}>
+        <form className="flex flex-col gap-3">
           <div className="flex gap-2">
             <Input
               isRequired
@@ -89,22 +131,15 @@ export const SignUpForm = () => {
                 inputWrapper:
                   "data-[hover=true]:z-10 group-data-[focus-visible=true]:z-10",
               }}
+              errorMessage={errors.firstName}
               label="First Name"
               name="firstName"
               placeholder="Enter your first name"
               radius="md"
               type="text"
-              validate={() => {
-                if (
-                  firstName.match(
-                    "^[A-Z][a-zA-Z'’-]+(?: [A-Z][a-zA-Z'’-]+)*$",
-                  ) === null
-                ) {
-                  return "Please enter a valid first name.";
-                }
-              }}
+              value={formData.firstName}
               variant="bordered"
-              onChange={(e) => setFirstName(e.target.value)}
+              onChange={handleChange}
             />
 
             <Input
@@ -113,22 +148,15 @@ export const SignUpForm = () => {
                 inputWrapper:
                   "data-[hover=true]:z-10 group-data-[focus-visible=true]:z-10",
               }}
+              errorMessage={errors.lastName}
               label="Last Name"
               name="lastName"
               placeholder="Enter your last name"
               radius="md"
               type="text"
-              validate={() => {
-                if (
-                  lastName.match(
-                    "^[A-Z][a-zA-Z'’-]+(?: [A-Z][a-zA-Z'’-]+)*$",
-                  ) === null
-                ) {
-                  return "Please enter a valid first name.";
-                }
-              }}
+              value={formData.lastName}
               variant="bordered"
-              onChange={(e) => setLastName(e.target.value)}
+              onChange={handleChange}
             />
           </div>
           <Input
@@ -137,13 +165,15 @@ export const SignUpForm = () => {
               inputWrapper:
                 "data-[hover=true]:z-10 group-data-[focus-visible=true]:z-10",
             }}
-            errorMessage="Please enter a valid email address."
+            errorMessage={errors.email}
             label="Email Address"
             name="email"
             placeholder="Enter your email"
             radius="md"
             type="email"
+            value={formData.email}
             variant="bordered"
+            onChange={handleChange}
           />
           <Input
             isRequired
@@ -166,18 +196,15 @@ export const SignUpForm = () => {
                 )}
               </button>
             }
+            errorMessage={errors.password}
             label="Password"
             name="password"
             placeholder="Enter your password"
             radius="md"
             type={isVisible ? "text" : "password"}
-            validate={() => {
-              if (password.length < 8) {
-                return "Password must be at least 8 characters long.";
-              }
-            }}
+            value={formData.password}
             variant="bordered"
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={handleChange}
           />
           <Input
             isRequired
@@ -200,18 +227,15 @@ export const SignUpForm = () => {
                 )}
               </button>
             }
+            errorMessage={errors.confirmPassword}
             label="Confirm Password"
             name="confirmPassword"
             placeholder="Confirm your password"
             radius="md"
             type={isConfirmVisible ? "text" : "password"}
-            validate={() => {
-              if (password !== confirmPassword && confirmPassword.length > 0) {
-                return "Passwords do not match.";
-              }
-            }}
+            value={formData.confirmPassword}
             variant="bordered"
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            onChange={handleChange}
           />
           <RoleSelection />
           <Checkbox isRequired className="py-4" size="sm">
@@ -224,7 +248,14 @@ export const SignUpForm = () => {
               Privacy Policy
             </Link>
           </Checkbox>
-          <Button color="primary" isLoading={isLoading} type="submit">
+          {errors.general && <p className="text-red-500">{errors.general}</p>}
+          {successMessage && <p className="text-green-500">{successMessage}</p>}
+          <Button
+            color="primary"
+            isLoading={isLoading}
+            type="button"
+            onClick={handleSubmit}
+          >
             Sign Up
           </Button>
         </form>
