@@ -73,6 +73,14 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     fetchUserData();
   }, [auth]);
 
+  useEffect(() => {
+    const storedAuth = localStorage.getItem("auth");
+
+    if (storedAuth) {
+      setAuth(JSON.parse(storedAuth));
+    }
+  }, []);
+
   return (
     <AuthContext.Provider
       value={{ auth, user, setAuth, setUser, persist, togglePersist, logout }}
