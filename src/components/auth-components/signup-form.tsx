@@ -47,6 +47,10 @@ export const SignUpForm = () => {
     setErrors({ ...errors, [e.target.name]: "" });
   };
 
+  const handleRoleChange = (role: string) => {
+    setFormData((prev) => ({ ...prev, role }));
+  };
+
   const validate = (): boolean => {
     let newErrors: { [key: string]: string } = {};
 
@@ -237,7 +241,10 @@ export const SignUpForm = () => {
             variant="bordered"
             onChange={handleChange}
           />
-          <RoleSelection />
+          <RoleSelection
+            selectedRole={formData.role}
+            onRoleChange={handleRoleChange}
+          />
           <Checkbox isRequired className="py-4" size="sm">
             I agree with the&nbsp;
             <Link href="#" size="sm">
@@ -253,7 +260,7 @@ export const SignUpForm = () => {
           <Button
             color="primary"
             isLoading={isLoading}
-            type="button"
+            type="submit"
             onClick={handleSubmit}
           >
             Sign Up
