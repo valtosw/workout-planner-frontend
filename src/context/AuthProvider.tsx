@@ -1,6 +1,7 @@
 import { createContext, useState, ReactNode, FC, useEffect } from "react";
 
 import axiosPrivate from "../api/axios";
+import { log } from "console";
 export interface AuthData {
   accessToken: string;
   id: string;
@@ -64,7 +65,10 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
           console.log("User data:", response.data);
           setUser(response.data);
-        } catch (err) {
+        } catch (err: any) {
+          if (err.response?.status === 401) {
+            logout();
+          }
           console.error("Error fetching user data:", err);
         }
       }
@@ -72,14 +76,6 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
     fetchUserData();
   }, [auth]);
-
-  useEffect(() => {
-    const storedAuth = localStorage.getItem("auth");
-
-    if (storedAuth) {
-      setAuth(JSON.parse(storedAuth));
-    }
-  }, []);
 
   return (
     <AuthContext.Provider
