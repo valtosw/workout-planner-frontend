@@ -33,7 +33,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const [auth, setAuth] = useState<AuthData | null>(null);
   const [user, setUser] = useState<UserData | null>(null);
   const [persist, setPersist] = useState<boolean>(() => {
-    return localStorage.getItem("persist") === "true";
+    return JSON.parse(localStorage.getItem("persist") || "false");
   });
 
   const togglePersist = () => {
