@@ -11,6 +11,7 @@ import useAuth from "@/hooks/useAuth";
 import { errorToast } from "@/types/toast";
 import { axiosPrivate } from "@/api/axios";
 import { ROUTES } from "@/constants/routes";
+import { useNavigate } from "react-router-dom";
 
 interface LoginRequest {
   email: string;
@@ -18,6 +19,7 @@ interface LoginRequest {
 }
 
 export const LoginForm = () => {
+  const navigate = useNavigate();
   const [isVisible, setIsVisible] = React.useState(false);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
@@ -46,7 +48,7 @@ export const LoginForm = () => {
 
       setAuth(userAuth);
 
-      window.location.href = ROUTES.TRAINERS;
+      navigate(ROUTES.TRAINERS);
     } catch (error: any) {
       errorToast(error.response?.data?.message || "Login failed");
     } finally {
