@@ -45,7 +45,6 @@ export const LoginForm = () => {
       };
 
       setAuth(userAuth);
-      localStorage.setItem("auth", JSON.stringify(userAuth));
 
       window.location.href = ROUTES.TRAINERS;
     } catch (error: any) {
