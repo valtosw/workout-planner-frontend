@@ -5,13 +5,14 @@ import { Button, Input, Checkbox, Link, Form, Divider } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { jwtDecode } from "jwt-decode";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 
 import { FacebookIcon2, Logo } from "@/components/icons";
 import useAuth from "@/hooks/useAuth";
 import { errorToast } from "@/types/toast";
 import { axiosPrivate } from "@/api/axios";
 import { ROUTES } from "@/constants/routes";
-import { useNavigate } from "react-router-dom";
 
 interface LoginRequest {
   email: string;
@@ -113,7 +114,7 @@ export const LoginForm = () => {
             >
               Remember me
             </Checkbox>
-            <Link className="text-default-500" href="#" size="sm">
+            <Link as={RouterLink} className="text-default-500" size="sm" to="#">
               Forgot password?
             </Link>
           </div>
@@ -149,7 +150,7 @@ export const LoginForm = () => {
         </div>
         <p className="text-center text-small">
           Need to create an account?&nbsp;
-          <Link href="/signup" size="sm">
+          <Link as={RouterLink} size="sm" to={ROUTES.SIGNUP}>
             Sign Up
           </Link>
         </p>

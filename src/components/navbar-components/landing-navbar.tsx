@@ -9,11 +9,12 @@ import {
   NavbarMenu,
   NavbarMenuItem,
 } from "@heroui/navbar";
+import { Link as RouterLink } from "react-router-dom";
 
 import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
-import { GithubIcon } from "@/components/icons";
 import { Logo } from "@/components/icons";
+import { ROUTES } from "@/constants/routes";
 
 export const LandingNavbar = () => {
   return (
@@ -21,9 +22,10 @@ export const LandingNavbar = () => {
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarBrand className="gap-3 max-w-fit">
           <Link
+            as={RouterLink}
             className="flex justify-start items-center gap-1"
             color="foreground"
-            href="/"
+            to="/"
           >
             <Logo />
             <p className="font-bold text-inherit">Workout Planner</p>
@@ -40,9 +42,9 @@ export const LandingNavbar = () => {
         </NavbarItem>
         <NavbarItem className="hidden md:flex">
           <Button
-            as={Link}
+            as={RouterLink}
             className="text-sm font-normal text-default-600 bg-default-100"
-            href="/login"
+            to={ROUTES.LOGIN}
             variant="flat"
           >
             Login
@@ -50,9 +52,9 @@ export const LandingNavbar = () => {
         </NavbarItem>
         <NavbarItem className="hidden md:flex">
           <Button
-            as={Link}
+            as={RouterLink}
             className="text-sm font-normal text-default-600 bg-default-100"
-            href="/signup"
+            to={ROUTES.SIGNUP}
             variant="flat"
           >
             Sing Up
@@ -61,9 +63,6 @@ export const LandingNavbar = () => {
       </NavbarContent>
 
       <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
-        <Link isExternal href={siteConfig.links.github}>
-          <GithubIcon className="text-default-500" />
-        </Link>
         <ThemeSwitch />
         <NavbarMenuToggle />
       </NavbarContent>

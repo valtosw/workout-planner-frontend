@@ -9,6 +9,7 @@ import useFeedback from "@/hooks/useFeedback";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "@/constants/routes";
 import axios from "@/api/axios";
+import { Link as RouterLink } from "react-router-dom";
 
 interface RegisterRequest {
   firstName: string;
@@ -289,7 +290,7 @@ export const SignUpForm = () => {
         </div>
         <p className="text-center text-small">
           Already have an account?&nbsp;
-          <Link href="/login" size="sm">
+          <Link as={RouterLink} size="sm" to={ROUTES.LOGIN}>
             Log In
           </Link>
         </p>

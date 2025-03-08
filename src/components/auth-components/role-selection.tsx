@@ -1,10 +1,15 @@
-import { useState } from "react";
 import { Icon } from "@iconify/react";
 import { Card } from "@heroui/react";
 
 import { DumbbellIcon } from "@/components/icons";
 
-export const RoleSelection = ({ selectedRole, onRoleChange }: { selectedRole: string, onRoleChange: (role: string) => void }) => {
+export const RoleSelection = ({
+  selectedRole,
+  onRoleChange,
+}: {
+  selectedRole: string;
+  onRoleChange: (role: string) => void;
+}) => {
   return (
     <div className="flex flex-col gap-3">
       <p className="text-sm font-medium text-gray-600 dark:text-gray-300">
