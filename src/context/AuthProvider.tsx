@@ -1,7 +1,8 @@
 import { createContext, useState, ReactNode, FC, useEffect } from "react";
 
 import axiosPrivate from "../api/axios";
-import { log } from "console";
+
+import { errorToast } from "@/types/toast";
 export interface AuthData {
   accessToken: string;
   id: string;
@@ -48,9 +49,10 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
       await axiosPrivate.post("/Auth/Logout", {}, { withCredentials: true });
       setAuth(null);
       setUser(null);
-      console.log("Logged out");
+      setPersist(false);
+      localStorage.removeItem("persist");
     } catch (err) {
-      console.error("Logout Error:", err);
+      errorToast("Logout Error");
     }
   };
 
@@ -69,7 +71,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
           if (err.response?.status === 401) {
             logout();
           }
-          console.error("Error fetching user data:", err);
+          errorToast("User data fetch error");
         }
       }
     };
