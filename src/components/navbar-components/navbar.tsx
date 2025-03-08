@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { Router, useLocation } from "react-router-dom";
 import {
   Navbar as HeroUINavbar,
   NavbarBrand,
@@ -16,6 +16,8 @@ import {
   Avatar,
   Button,
 } from "@heroui/react";
+
+import { Link as RouterLink } from "react-router-dom";
 
 import { ThemeSwitch } from "../theme-switch";
 
@@ -44,26 +46,26 @@ export const Navbar = () => {
 
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarItem isActive={location.pathname === "/workout-plans"}>
-          <Link
+          <RouterLink
             color={
               location.pathname === "/workout-plans"
                 ? "secondary"
                 : "foreground"
             }
-            href="/workout-plans"
+            to="/workout-plans"
           >
             Workout Plans
-          </Link>
+          </RouterLink>
         </NavbarItem>
         <NavbarItem isActive={location.pathname === "/trainers"}>
-          <Link
+          <RouterLink
             color={
               location.pathname === "/trainers" ? "secondary" : "foreground"
             }
-            href="/trainers"
+            to="/trainers"
           >
             Trainers
-          </Link>
+          </RouterLink>
         </NavbarItem>
       </NavbarContent>
 
