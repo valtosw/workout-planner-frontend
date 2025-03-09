@@ -4,4 +4,5 @@ export const ROUTES = {
   TRAINERS: "/trainers",
   WORKOUT_PLANS: "/workout-plans",
   UNAUTHORIZED: "/unauthorized",
+  EMAIL_CONFIRMATION: "/confirm-email",
 };
