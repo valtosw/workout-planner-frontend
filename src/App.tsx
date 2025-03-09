@@ -14,6 +14,7 @@ import TrainersPage from "@/pages/trainers";
 import IndexPage from "@/pages/index";
 import WorkoutPlansPage from "@/pages/workout-plans";
 import { ROUTES } from "@/constants/routes";
+import { EmailConfirmationPage } from "./pages/status-pages/email-confirmation";
 
 const SignupPage = React.lazy(() => import("@/pages/signup"));
 const LoginPage = React.lazy(() => import("@/pages/login"));
@@ -41,6 +42,11 @@ function App() {
             <Route element={<TrainersPage />} path={ROUTES.TRAINERS} />
           </Route>
         </Route>
+
+        <Route
+          element={<EmailConfirmationPage />}
+          path={ROUTES.EMAIL_CONFIRMATION}
+        />
       </Routes>
     </Suspense>
   );
