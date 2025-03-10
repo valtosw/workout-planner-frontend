@@ -2,14 +2,12 @@
 import { useState } from "react";
 import { Button, Input, Checkbox, Link, Divider } from "@heroui/react";
 import { Icon } from "@iconify/react";
+import { Link as RouterLink } from "react-router-dom";
 
 import { RoleSelection } from "@/components/auth-components/role-selection";
 import { Logo, FacebookIcon2 } from "@/components/icons";
-import useFeedback from "@/hooks/useFeedback";
-import { useNavigate } from "react-router-dom";
 import { ROUTES } from "@/constants/routes";
 import axios from "@/api/axios";
-import { Link as RouterLink } from "react-router-dom";
 
 interface RegisterRequest {
   firstName: string;
