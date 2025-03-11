@@ -1,11 +1,16 @@
 // "use client";
 import { useState } from "react";
-import { Button, Input, Checkbox, Link, Divider } from "@heroui/react";
+import { Button, Input, Checkbox, Link, Divider, Card } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { Link as RouterLink } from "react-router-dom";
 
 import { RoleSelection } from "@/components/auth-components/role-selection";
-import { Logo, FacebookIcon2 } from "@/components/icons";
+import {
+  Logo,
+  FacebookIcon2,
+  CheckCircleIcon,
+  XCircleIcon,
+} from "@/components/icons";
 import { ROUTES } from "@/constants/routes";
 import axios from "@/api/axios";
 
@@ -37,6 +42,10 @@ export const SignUpForm = () => {
   const [isConfirmVisible, setIsConfirmVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [registrationMessage, setRegistrationMessage] = useState<{
+    type: "success" | "error";
+    message: string;
+  } | null>(null);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
   const toggleConfirmVisibility = () => setIsConfirmVisible(!isConfirmVisible);
@@ -85,10 +94,13 @@ export const SignUpForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!validate()) return;
+    if (!validate()) {
+      return;
+    }
 
     setIsLoading(true);
     setSuccessMessage("");
+    setRegistrationMessage(null);
 
     try {
       const response = await axios.post<RegisterResponse>(
@@ -96,9 +108,11 @@ export const SignUpForm = () => {
         formData,
       );
 
-      setSuccessMessage(
-        response.data.message || "Registration successful! Please log in.",
-      );
+      setRegistrationMessage({
+        type: "success",
+        message:
+          response.data.message || "Registration successful! Please log in.",
+      });
       setFormData({
         firstName: "",
         lastName: "",
@@ -108,8 +122,9 @@ export const SignUpForm = () => {
         role: "customer",
       });
     } catch (error: any) {
-      setErrors({
-        general: error.response?.data?.message || "Registration failed.",
+      setRegistrationMessage({
+        type: "error",
+        message: error.response?.data?.message || "Registration failed.",
       });
     } finally {
       setIsLoading(false);
@@ -126,6 +141,7 @@ export const SignUpForm = () => {
             Create an account to get started
           </p>
         </div>
+
         <form className="flex flex-col gap-3">
           <div className="flex gap-2">
             <Input
@@ -140,6 +156,13 @@ export const SignUpForm = () => {
               placeholder="Enter your first name"
               radius="md"
               type="text"
+              validate={(value) => {
+                if (
+                  !value.match(/^[A-Z][a-zA-Z'’-]+(?: [A-Z][a-zA-Z'’-]+)*$/)
+                ) {
+                  return "Please enter a valid first name.";
+                }
+              }}
               value={formData.firstName}
               variant="bordered"
               onChange={handleChange}
@@ -157,6 +180,13 @@ export const SignUpForm = () => {
               placeholder="Enter your last name"
               radius="md"
               type="text"
+              validate={(value) => {
+                if (
+                  !value.match(/^[A-Z][a-zA-Z'’-]+(?: [A-Z][a-zA-Z'’-]+)*$/)
+                ) {
+                  return "Please enter a valid last name.";
+                }
+              }}
               value={formData.lastName}
               variant="bordered"
               onChange={handleChange}
@@ -174,6 +204,11 @@ export const SignUpForm = () => {
             placeholder="Enter your email"
             radius="md"
             type="email"
+            validate={(value) => {
+              if (!value.match(/^\S+@\S+\.\S+$/)) {
+                return "Please enter a valid email address";
+              }
+            }}
             value={formData.email}
             variant="bordered"
             onChange={handleChange}
@@ -205,6 +240,11 @@ export const SignUpForm = () => {
             placeholder="Enter your password"
             radius="md"
             type={isVisible ? "text" : "password"}
+            validate={(value) => {
+              if (value.length < 8) {
+                return "Password must be at least 8 characters long.";
+              }
+            }}
             value={formData.password}
             variant="bordered"
             onChange={handleChange}
@@ -236,6 +276,11 @@ export const SignUpForm = () => {
             placeholder="Confirm your password"
             radius="md"
             type={isConfirmVisible ? "text" : "password"}
+            validate={(value) => {
+              if (value !== formData.password) {
+                return "Passwords do not match.";
+              }
+            }}
             value={formData.confirmPassword}
             variant="bordered"
             onChange={handleChange}
@@ -255,7 +300,39 @@ export const SignUpForm = () => {
             </Link>
           </Checkbox>
           {errors.general && <p className="text-red-500">{errors.general}</p>}
-          {successMessage && <p className="text-green-500">{successMessage}</p>}
+          {registrationMessage && (
+            <Card
+              className={`p-4 flex gap-3 items-start rounded-xl border shadow-md ${
+                registrationMessage.type === "success"
+                  ? "bg-green-100 border-green-400 text-green-700"
+                  : "bg-red-100 border-red-400 text-red-700"
+              }`}
+            >
+              {registrationMessage.type === "success" ? (
+                <>
+                  <CheckCircleIcon className="w-6 h-6 text-green-500" />
+                  <div>
+                    <h3 className="text-lg font-semibold inline-flex items-center gap-2">
+                      Registration almost complete!
+                    </h3>
+                    <p className="text-sm">
+                      Please check your email for a confirmation link.
+                    </p>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <XCircleIcon className="w-6 h-6 text-red-500" />
+                  <div>
+                    <h3 className="text-lg font-semibold inline-flex items-center gap-2">
+                      An error occured!
+                    </h3>
+                    <p className="text-sm">Please contact the support</p>
+                  </div>
+                </>
+              )}
+            </Card>
+          )}
           <Button
             color="primary"
             isLoading={isLoading}
