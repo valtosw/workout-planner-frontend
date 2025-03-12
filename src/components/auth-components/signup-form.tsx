@@ -1,8 +1,9 @@
 // "use client";
-import { useState } from "react";
-import { Button, Input, Checkbox, Link, Divider, Card } from "@heroui/react";
+import { useEffect, useState } from "react";
+import { Button, Input, Link, Divider, Card } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { Link as RouterLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { RoleSelection } from "@/components/auth-components/role-selection";
 import {
@@ -13,6 +14,10 @@ import {
 } from "@/components/icons";
 import { ROUTES } from "@/constants/routes";
 import axios from "@/api/axios";
+
+function delay(delay: number) {
+  return new Promise((resolve) => setTimeout(resolve, delay));
+}
 
 interface RegisterRequest {
   firstName: string;
@@ -37,6 +42,8 @@ export const SignUpForm = () => {
     role: "customer",
   });
 
+  const navigate = useNavigate();
+
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [isVisible, setIsVisible] = useState(false);
   const [isConfirmVisible, setIsConfirmVisible] = useState(false);
@@ -46,9 +53,37 @@ export const SignUpForm = () => {
     type: "success" | "error";
     message: string;
   } | null>(null);
+  const [isEmailConfirmed, setIsEmailConfirmed] = useState(false);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
   const toggleConfirmVisibility = () => setIsConfirmVisible(!isConfirmVisible);
+
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      try {
+        const response = await axios.post(
+          "/Auth/CheckEmailConfirmation",
+          { email: formData.email },
+          {
+            headers: { "Content-Type": "application/json" },
+          },
+        );
+
+        console.log(response.data);
+
+        if (response.data === true) {
+          setIsEmailConfirmed(true);
+          clearInterval(interval);
+          delay(3000);
+          navigate(ROUTES.LOGIN);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [navigate, formData.email]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -289,51 +324,49 @@ export const SignUpForm = () => {
             selectedRole={formData.role}
             onRoleChange={handleRoleChange}
           />
-          <Checkbox isRequired className="py-4" size="sm">
-            I agree with the&nbsp;
-            <Link href="#" size="sm">
-              Terms
-            </Link>
-            &nbsp; and&nbsp;
-            <Link href="#" size="sm">
-              Privacy Policy
-            </Link>
-          </Checkbox>
-          {errors.general && <p className="text-red-500">{errors.general}</p>}
           {registrationMessage && (
             <Card
-              className={`p-4 flex gap-3 items-start rounded-xl border shadow-md ${
+              className={`p-3 flex items-start gap-3 rounded-xl border shadow-md ${
                 registrationMessage.type === "success"
-                  ? "bg-green-100 border-green-400 text-green-700"
-                  : "bg-red-100 border-red-400 text-red-700"
+                  ? "bg-green-300 border-green-600 text-green-900"
+                  : "bg-red-300 border-red-600 text-red-900"
               }`}
             >
               {registrationMessage.type === "success" ? (
                 <>
-                  <CheckCircleIcon className="w-6 h-6 text-green-500" />
-                  <div>
-                    <h3 className="text-lg font-semibold inline-flex items-center gap-2">
-                      Registration almost complete!
-                    </h3>
-                    <p className="text-sm">
-                      Please check your email for a confirmation link.
-                    </p>
+                  <div className="flex items-center space-x-2">
+                    <CheckCircleIcon className="w-6 h-6 text-green-800 mt-0.5" />
+                    <div>
+                      <h3 className="text-base font-semibold">
+                        {isEmailConfirmed
+                          ? "Registration complete!"
+                          : "Registration almost complete!"}
+                      </h3>
+                      <p className="text-sm">
+                        {isEmailConfirmed
+                          ? "Redirecting to the login page..."
+                          : "Check your email for a confirmation link."}
+                      </p>
+                    </div>
                   </div>
                 </>
               ) : (
                 <>
-                  <XCircleIcon className="w-6 h-6 text-red-500" />
-                  <div>
-                    <h3 className="text-lg font-semibold inline-flex items-center gap-2">
-                      An error occured!
-                    </h3>
-                    <p className="text-sm">Please contact the support</p>
+                  <div className="flex items-center space-x-2">
+                    <XCircleIcon className="w-6 h-6 text-red-800 mt-0.5" />
+                    <div>
+                      <h3 className="text-base font-semibold">
+                        An error occurred!
+                      </h3>
+                      <p className="text-sm">We are working on this issue.</p>
+                    </div>
                   </div>
                 </>
               )}
             </Card>
           )}
           <Button
+            className="w-full mt-2"
             color="primary"
             isLoading={isLoading}
             type="submit"
