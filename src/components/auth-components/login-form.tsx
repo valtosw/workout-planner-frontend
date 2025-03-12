@@ -80,6 +80,11 @@ export const LoginForm = () => {
             variant="bordered"
             {...register("email", { required: "Email is required" })}
             errorMessage={errors.email?.message}
+            validate={(value) => {
+              if (!value.match(/^\S+@\S+\.\S+$/)) {
+                return "Please enter a valid email address";
+              }
+            }}
           />
           <Input
             isRequired
@@ -104,6 +109,11 @@ export const LoginForm = () => {
             variant="bordered"
             {...register("password", { required: "Password is required" })}
             errorMessage={errors.password?.message}
+            validate={(value) => {
+              if (value.length < 8) {
+                return "Password must be at least 8 characters long.";
+              }
+            }}
           />
           <div className="flex w-full items-center justify-between px-1 py-2">
             <Checkbox
