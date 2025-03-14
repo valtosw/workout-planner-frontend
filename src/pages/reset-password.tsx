@@ -73,7 +73,6 @@ export default function ResetPasswordPage() {
         { Email: email, Code: code, NewPassword: formData.password },
       );
 
-
       setSubmitMessage({
         type: "success",
         message: response.data.message || "Password reset successful.",
