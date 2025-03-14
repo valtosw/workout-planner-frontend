@@ -54,6 +54,7 @@ export const SignUpForm = () => {
     message: string;
   } | null>(null);
   const [isEmailConfirmed, setIsEmailConfirmed] = useState(false);
+  const [emailSave, setEmailSave] = useState("");
 
   const toggleVisibility = () => setIsVisible(!isVisible);
   const toggleConfirmVisibility = () => setIsConfirmVisible(!isConfirmVisible);
@@ -63,22 +64,21 @@ export const SignUpForm = () => {
       try {
         const response = await axios.post(
           "/Auth/CheckEmailConfirmation",
-          { email: formData.email },
+          { email: emailSave },
           {
             headers: { "Content-Type": "application/json" },
           },
         );
 
-        console.log(response.data);
-
         if (response.data === true) {
           setIsEmailConfirmed(true);
           clearInterval(interval);
-          delay(3000);
+          delay(10000);
+          setEmailSave("");
           navigate(ROUTES.LOGIN);
         }
       } catch (error) {
-        console.error(error);
+        return;
       }
     }, 3000);
 
@@ -87,6 +87,7 @@ export const SignUpForm = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    setEmailSave(formData.email);
     setErrors({ ...errors, [e.target.name]: "" });
   };
 
