@@ -37,7 +37,6 @@ export const EmailConfirmationPage = () => {
           setSuccess(true);
         })
         .catch((err) => {
-          console.error("Confirm Email Error:", err);
           setSuccess(false);
         });
     } else if (!email || !code) {
