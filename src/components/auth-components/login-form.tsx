@@ -124,7 +124,12 @@ export const LoginForm = () => {
             >
               Remember me
             </Checkbox>
-            <Link as={RouterLink} className="text-default-500" size="sm" to="#">
+            <Link
+              as={RouterLink}
+              className="text-default-500"
+              size="sm"
+              to={ROUTES.FORGOT_PASSWORD}
+            >
               Forgot password?
             </Link>
           </div>
