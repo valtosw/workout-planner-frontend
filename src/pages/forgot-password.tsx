@@ -1,10 +1,10 @@
-import LandingDefaultLayout from "@/layouts/landing-default";
 import { ForgotPasswordForm } from "@/components/auth-components/forgot-password-form";
+import DefaultLayout from "@/layouts/default";
 
 export default function ForgotPasswordPage() {
   return (
-    <LandingDefaultLayout>
+    <DefaultLayout>
       <ForgotPasswordForm />
-    </LandingDefaultLayout>
+    </DefaultLayout>
   );
 }
