@@ -1,14 +1,22 @@
 "use client";
 
-import React, { useState } from "react";
-import { Button, Input, Checkbox, Link, Form, Divider } from "@heroui/react";
+import { useState } from "react";
+import {
+  Button,
+  Input,
+  Checkbox,
+  Link,
+  Form,
+  Divider,
+  Card,
+} from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { jwtDecode } from "jwt-decode";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { Link as RouterLink } from "react-router-dom";
 
-import { FacebookIcon2, Logo } from "@/components/icons";
+import { FacebookIcon2, Logo, XCircleIcon } from "@/components/icons";
 import useAuth from "@/hooks/useAuth";
 import { errorToast } from "@/types/toast";
 import { axiosPrivate } from "@/api/axios";
@@ -21,7 +29,8 @@ interface LoginRequest {
 
 export const LoginForm = () => {
   const navigate = useNavigate();
-  const [isVisible, setIsVisible] = React.useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
 
@@ -51,7 +60,8 @@ export const LoginForm = () => {
 
       navigate(ROUTES.TRAINERS);
     } catch (error: any) {
-      errorToast(error.response?.data?.message || "Login failed");
+      // errorToast(error.response?.data?.message || "Login failed");
+      setErrorMessage(error.response?.data?.message || "Login failed");
     } finally {
       setLoading(false);
     }
@@ -133,6 +143,19 @@ export const LoginForm = () => {
               Forgot password?
             </Link>
           </div>
+          {errorMessage && (
+            <Card className="p-3 flex items-start gap-3 rounded-xl border shadow-md bg-red-300 border-red-600 text-red-900 w-full">
+              <div className="flex items-center space-x-2">
+                <XCircleIcon className="w-6 h-6 text-red-800 mt-0.5" />
+                <div>
+                  <h3 className="text-base font-semibold">
+                    An error occurred!
+                  </h3>
+                  <p className="text-sm">{errorMessage}</p>
+                </div>
+              </div>
+            </Card>
+          )}
           <Button
             className="w-full"
             color="primary"
@@ -163,7 +186,7 @@ export const LoginForm = () => {
             Continue with Facebook
           </Button>
         </div>
-        <p className="text-center text-small">
+        <p className="text-center text-small pb-4">
           Need to create an account?&nbsp;
           <Link as={RouterLink} size="sm" to={ROUTES.SIGNUP}>
             Sign Up
