@@ -78,7 +78,6 @@ export default function ResetPasswordPage() {
         type: "success",
         message: response.data.message || "Password reset successful.",
       });
-      sessionStorage.setItem("passwordResetSuccess", "true");
       setIsChanged(true);
       setFormData({
         password: "",
