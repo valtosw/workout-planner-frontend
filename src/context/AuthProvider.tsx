@@ -37,6 +37,14 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     return JSON.parse(localStorage.getItem("persist") || "false");
   });
 
+  useEffect(() => {
+    if (auth) {
+      localStorage.setItem("auth", JSON.stringify(auth));
+    } else {
+      localStorage.removeItem("auth");
+    }
+  }, [auth]);
+
   const togglePersist = () => {
     const newPersist = !persist;
 
