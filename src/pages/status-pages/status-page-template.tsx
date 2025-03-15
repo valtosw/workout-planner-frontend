@@ -39,7 +39,9 @@ export function StatusPageTemplate({
           </Card>
         </motion.div>
       </div>
-      <ThemeSwitch />
+      <div className="hidden">
+        <ThemeSwitch />
+      </div>
     </>
   );
 }
