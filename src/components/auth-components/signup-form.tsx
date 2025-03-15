@@ -397,7 +397,7 @@ export const SignUpForm = () => {
             Sign Up with Facebook
           </Button>
         </div>
-        <p className="text-center text-small">
+        <p className="text-center text-small pb-4">
           Already have an account?&nbsp;
           <Link as={RouterLink} size="sm" to={ROUTES.LOGIN}>
             Log In
