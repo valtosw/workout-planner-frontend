@@ -1,10 +1,10 @@
 import { LoginForm } from "@/components/auth-components/login-form";
-import LandingDefaultLayout from "@/layouts/landing-default";
+import DefaultLayout from "@/layouts/default";
 
 export default function LoginPage() {
   return (
-    <LandingDefaultLayout>
+    <DefaultLayout>
       <LoginForm />
-    </LandingDefaultLayout>
+    </DefaultLayout>
   );
 }
