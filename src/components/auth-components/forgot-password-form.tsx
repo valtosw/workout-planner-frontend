@@ -36,13 +36,6 @@ export const ForgotPasswordForm = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  useEffect(() => {
-    if (sessionStorage.getItem("passwordResetSuccess")) {
-      sessionStorage.removeItem("passwordResetSuccess");
-      navigate(ROUTES.LOGIN);
-    }
-  }, [navigate]);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -66,6 +59,9 @@ export const ForgotPasswordForm = () => {
       setFormData({
         email: "",
       });
+      setTimeout(() => {
+        navigate(ROUTES.LOGIN);
+      }, 10000);
     } catch (error: any) {
       setSubmitMessage({
         type: "error",
