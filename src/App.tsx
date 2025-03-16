@@ -8,6 +8,7 @@ import ForCustomerPage from "./test/for-customer";
 import ProtectedRoute from "./components/auth-components/protected-route";
 import ForTrainerPage from "./test/for-trainer";
 import { EmailConfirmationPage } from "./pages/status-pages/email-confirmation";
+import { CustomerProfilePage } from "./components/profile-components/customer-profile";
 
 import { LoadingPage } from "@/pages/status-pages/loading-page";
 import { NotFoundPage } from "@/pages/status-pages/not-found-page";
@@ -35,6 +36,12 @@ function App() {
         <Route element={<PersistLogin />}>
           <Route element={<ProtectedRoute allowedRoles={["Customer"]} />}>
             <Route element={<ForCustomerPage />} path="/for-customer" />
+          </Route>
+          <Route element={<ProtectedRoute allowedRoles={["Customer"]} />}>
+            <Route
+              element={<CustomerProfilePage />}
+              path={ROUTES.CUSTOMER_PROFILE}
+            />
           </Route>
           <Route element={<ProtectedRoute allowedRoles={["Trainer"]} />}>
             <Route element={<ForTrainerPage />} path="/for-trainer" />
