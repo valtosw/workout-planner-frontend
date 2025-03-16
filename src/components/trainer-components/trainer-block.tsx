@@ -52,19 +52,19 @@ const TrainerBlock: React.FC<TrainerBlockProps> = ({ trainer }) => {
         <h3 className="text-2xl pb-1 font-semibold">
           {trainer.firstName} {trainer.lastName}
         </h3>
-        <div className="text-sm text-gray-500 flex items-center">
+        <div className="text-sm text-gray-500 flex items-center truncate">
           <ExperienceIcon className="w-4 h-4 mr-1" />
           Experience: {trainer.experience || "N/A"}
         </div>
-        <div className="text-sm text-gray-500 flex items-center">
+        <div className="text-sm text-gray-500 flex items-center truncate">
           <LocationIcon className="w-4 h-4 mr-1" />
           Location: {`${trainer.city}, ${countryName}` || "N/A"}
         </div>
-        <div className="text-sm text-gray-500 flex items-center">
+        <div className="text-sm text-gray-500 flex items-center truncate">
           <PlaceOfWorkIcon className="w-4 h-4 mr-1" />
           Place of Work: {trainer.placeOfWork || "N/A"}
         </div>
-        <div className="text-sm text-gray-500 flex items-center">
+        <div className="text-sm text-gray-500 flex items-center truncate">
           <MoneyIcon className="w-4 h-4 mr-1" />
           Training Price: ${trainer.trainingPrice.toFixed(2)}
         </div>
