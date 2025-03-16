@@ -7,4 +7,6 @@ export const ROUTES = {
   EMAIL_CONFIRMATION: "/confirm-email",
   FORGOT_PASSWORD: "/forgot-password",
   RESET_PASSWORD: "/reset-password",
+  CUSTOMER_PROFILE: "/customer-profile",
+  TRAINER_PROFILE: "/trainer-profile",
 };
