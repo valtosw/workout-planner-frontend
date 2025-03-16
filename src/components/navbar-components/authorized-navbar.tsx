@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   Navbar as HeroUINavbar,
   NavbarBrand,
@@ -21,12 +21,14 @@ import { ThemeSwitch } from "../theme-switch";
 
 import { Logo } from "@/components/icons";
 import useAuth from "@/hooks/useAuth";
+import { ROUTES } from "@/constants/routes";
 
 const MenuItems = ["Profile", "Workout Plans", "Trainers", "Log Out"];
 
 export const AuthorizedNavbar = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const { user, auth, logout } = useAuth();
 
   return (
@@ -59,7 +61,7 @@ export const AuthorizedNavbar = () => {
                   ? "secondary"
                   : "foreground"
               }
-              to="/workout-plans"
+              to={ROUTES.WORKOUT_PLANS}
             >
               Workout Plans
             </Link>
@@ -70,7 +72,7 @@ export const AuthorizedNavbar = () => {
               color={
                 location.pathname === "/trainers" ? "secondary" : "foreground"
               }
-              to="/trainers"
+              to={ROUTES.TRAINERS}
             >
               Trainers
             </Link>
@@ -93,8 +95,15 @@ export const AuthorizedNavbar = () => {
             </DropdownTrigger>
             <DropdownMenu aria-label="Profile Actions" variant="flat">
               <DropdownItem key="profile" className="h-14 gap-2">
-                <p className="font-semibold">Signed in as</p>
-                <p className="font-semibold">{auth?.email}</p>
+                <Link
+                  as={RouterLink}
+                  className="flex flex-col items-start"
+                  color="foreground"
+                  to={ROUTES.CUSTOMER_PROFILE}
+                >
+                  <span>Signed in as</span>
+                  <span>{auth?.email}</span>
+                </Link>
               </DropdownItem>
               <DropdownItem key="settings">My Settings</DropdownItem>
               <DropdownItem key="team_settings">Team Settings</DropdownItem>
