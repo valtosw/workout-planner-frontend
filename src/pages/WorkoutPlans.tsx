@@ -1,8 +1,8 @@
 import { Spacer } from "@heroui/react";
 
-import DefaultLayout from "@/layouts/default";
-import { CreateWorkoutPlanCard } from "@/components/workout-plan-components/create-workout-plan";
-import { WorkoutPlanList } from "@/components/workout-plan-components/workout-plan-list";
+import DefaultLayout from "@/layouts/Default";
+import { CreateWorkoutPlanCard } from "@/components/WorkoutPlanComponents/CreateWorkoutPlan";
+import { WorkoutPlanList } from "@/components/WorkoutPlanComponents/WorkoutPlanList";
 import useAuth from "@/hooks/useAuth";
 
 const WorkoutPlansPage: React.FC = () => {

@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 
-import { LoadingPage } from "./loading-page";
-import { StatusPageTemplate } from "./status-page-template";
+import { LoadingPage } from "./LoadingPage";
+import { StatusPageTemplate } from "./StatusPageTemplate";
 
 import axios from "@/api/axios";
 

@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-import { StatusPageTemplate } from "../status-pages/status-page-template";
+import { StatusPageTemplate } from "../StatusPages/StatusPageTemplate";
 
 export function NotFoundPage() {
   const navigate = useNavigate();

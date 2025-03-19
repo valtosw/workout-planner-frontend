@@ -1,4 +1,4 @@
-import { StatusPageTemplate } from "./status-page-template";
+import { StatusPageTemplate } from "./StatusPageTemplate";
 
 export function LoadingPage() {
   return (

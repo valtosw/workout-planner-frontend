@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react";
 import { Divider, CircularProgress } from "@heroui/react";
 
-import TrainerBlock from "../components/trainer-components/trainer-block";
+import TrainerBlock from "../components/TrainerComponents/TrainerBlock";
 import { Trainer } from "../types/trainer";
-import TrainerFilter from "../components/filter-components/filter";
+import TrainerFilter from "../components/FilterComponents/Filter";
 import { errorToast } from "../types/toast";
 
 import {
   getPostedTrainersList,
   getFilteredTrainers,
-} from "@/api/model-apis/trainer-api";
-import DefaultLayout from "@/layouts/default";
+} from "@/api/ModelApis/TrainerApi";
+import DefaultLayout from "@/layouts/Default";
 
 const TrainersPage: React.FC = () => {
   const [trainers, setTrainers] = useState<Trainer[]>([]);

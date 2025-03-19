@@ -2,25 +2,25 @@ import { Route, Routes } from "react-router-dom";
 import { Suspense } from "react";
 import React from "react";
 
-import { UnauthorizedPage } from "./pages/status-pages/unauthorized-page";
-import PersistLogin from "./components/auth-components/persist-login";
+import { UnauthorizedPage } from "./pages/StatusPages/UnauthorizedPage";
+import PersistLogin from "./components/AuthComponents/PersistLogin";
 import ForCustomerPage from "./test/for-customer";
-import ProtectedRoute from "./components/auth-components/protected-route";
+import ProtectedRoute from "./components/AuthComponents/ProtectedRoute";
 import ForTrainerPage from "./test/for-trainer";
-import { EmailConfirmationPage } from "./pages/status-pages/email-confirmation";
-import { CustomerProfilePage } from "./components/profile-components/customer-profile";
+import { EmailConfirmationPage } from "./pages/StatusPages/EmailConfirmation";
+import { CustomerProfilePage } from "./components/ProfileComponents/CustomerProfile";
 
-import { LoadingPage } from "@/pages/status-pages/loading-page";
-import { NotFoundPage } from "@/pages/status-pages/not-found-page";
+import { LoadingPage } from "@/pages/StatusPages/LoadingPage";
+import { NotFoundPage } from "@/pages/StatusPages/NotFoundPage";
 import TrainersPage from "@/pages/trainers";
 import IndexPage from "@/pages/index";
-import WorkoutPlansPage from "@/pages/workout-plans";
-import { ROUTES } from "@/constants/routes";
+import WorkoutPlansPage from "@/pages/WorkoutPlans";
+import { ROUTES } from "@/constants/Routes";
 
 const SignupPage = React.lazy(() => import("@/pages/signup"));
 const LoginPage = React.lazy(() => import("@/pages/login"));
-const ForgotPasswordPage = React.lazy(() => import("@/pages/forgot-password"));
-const ResetPasswordPage = React.lazy(() => import("@/pages/reset-password"));
+const ForgotPasswordPage = React.lazy(() => import("@/pages/ForgotPassword"));
+const ResetPasswordPage = React.lazy(() => import("@/pages/ResetPassword"));
 
 function App() {
   return (
