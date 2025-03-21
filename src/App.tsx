@@ -8,17 +8,17 @@ import ForCustomerPage from "./test/for-customer";
 import ProtectedRoute from "./components/AuthComponents/ProtectedRoute";
 import ForTrainerPage from "./test/for-trainer";
 import { EmailConfirmationPage } from "./pages/StatusPages/EmailConfirmation";
-import { CustomerProfilePage } from "./components/ProfileComponents/CustomerProfile";
+import CustomerProfilePage from "./components/ProfileComponents/CustomerProfile";
 
 import { LoadingPage } from "@/pages/StatusPages/LoadingPage";
 import { NotFoundPage } from "@/pages/StatusPages/NotFoundPage";
-import TrainersPage from "@/pages/trainers";
+import TrainersPage from "@/pages/Trainers";
 import IndexPage from "@/pages/index";
 import WorkoutPlansPage from "@/pages/WorkoutPlans";
 import { ROUTES } from "@/constants/Routes";
 
-const SignupPage = React.lazy(() => import("@/pages/signup"));
-const LoginPage = React.lazy(() => import("@/pages/login"));
+const SignupPage = React.lazy(() => import("@/pages/SignUp"));
+const LoginPage = React.lazy(() => import("@/pages/Login"));
 const ForgotPasswordPage = React.lazy(() => import("@/pages/ForgotPassword"));
 const ResetPasswordPage = React.lazy(() => import("@/pages/ResetPassword"));
 
