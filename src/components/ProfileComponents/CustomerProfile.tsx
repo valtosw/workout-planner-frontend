@@ -21,6 +21,7 @@ import useAuth from "@/hooks/useAuth";
 import { Trainer } from "@/types/trainer";
 import { MappedTrainers } from "@/types/trainer";
 import axios from "@/api/axios";
+import MuscleRadarChart from "./MuscleRadarChart";
 
 const mockExercises = [
   { id: 1, name: "Squats" },
@@ -134,25 +135,7 @@ export const CustomerProfilePage = () => {
                   <Bar dataKey="value" fill="#3b82f6" radius={[10, 10, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
-              <ResponsiveContainer height={250} width="50%">
-                <RadarChart
-                  cx="50%"
-                  cy="50%"
-                  data={radarData}
-                  outerRadius="80%"
-                >
-                  <PolarGrid stroke="#ccc" />
-                  <PolarAngleAxis dataKey="subject" stroke="#fff" />
-                  <PolarRadiusAxis stroke="#ccc" />
-                  <Radar
-                    dataKey="value"
-                    fill="#3b82f6"
-                    fillOpacity={0.6}
-                    name="Performance"
-                    stroke="#3b82f6"
-                  />
-                </RadarChart>
-              </ResponsiveContainer>
+              <MuscleRadarChart userId={auth?.id || ""} />
             </div>
           </Card>
         </div>
