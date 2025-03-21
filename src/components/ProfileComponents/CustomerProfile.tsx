@@ -1,12 +1,8 @@
 import { useEffect, useState } from "react";
-import {
-  Avatar,
-  Button,
-  Divider,
-  Select,
-  SelectItem,
-  User,
-} from "@heroui/react";
+import { Avatar, Button, Divider, User } from "@heroui/react";
+
+import MuscleRadarChart from "./MuscleRadarChart";
+import ExerciseLineChart from "./ExerciseLineChart";
 
 import { Navbar } from "@/components/NavbarComponents/Navbar";
 import useAuth from "@/hooks/useAuth";
@@ -69,28 +65,24 @@ const CustomerProfilePage = () => {
         </div>
         <Divider className="w-full" />
         <div className="flex h-screen">
-          {/* Statistics Section - Takes 3/4 of the width */}
           <div className="flex-1 pr-6">
-            <h3 className="text-lg font-semibold">My Statistics</h3>
-            <div className="grid grid-cols-3 gap-6 h-full">
-              {/* Line Chart - 2/3 width */}
-              <div className="col-span-2 p-4 bg-gray-100 rounded-xl">
-                <Select
-                  label="Select Exercise"
-                  onChange={(e) => setSelectedExercise(e.target.value)}
-                >
-                  {exercises.map((exercise) => (
-                    <SelectItem key={exercise}>{exercise}</SelectItem>
-                  ))}
-                </Select>
+            <h3 className="text-lg font-semibold pb-4">My Statistics</h3>
+
+            <div className="bg-background p-6 rounded-lg">
+              <div className="flex gap-6">
+                <div className="w-3/5">
+                  <ExerciseLineChart userId={auth?.id || ""} />
+                </div>
+
+                <div className="w-2/5">
+                  <MuscleRadarChart userId={auth?.id || ""} />
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Vertical Divider */}
           <Divider className="h-screen" orientation="vertical" />
 
-          {/* Trainers Section - Takes 1/4 of the width */}
           <div className="w-60 pl-6">
             <h3 className="text-lg font-semibold pb-4">My Trainers</h3>
             <div className="flex flex-col space-y-4 items-start">
