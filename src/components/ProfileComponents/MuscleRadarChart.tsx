@@ -51,15 +51,15 @@ export default function MuscleRadarChart({ userId }: MuscleRadarChartProps) {
   }, [userId, period]);
 
   return (
-    <div>
+    <div className="p-6 bg-white dark:bg-[#18181c] rounded-lg">
       <div className="flex justify-end w-full mb-4">
         <Select
           aria-label="Time Range"
-          className="w-32"
+          className="w-32 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg"
           defaultSelectedKeys={["Week"]}
           listboxProps={{
             itemClasses: {
-              title: "text-tiny",
+              title: "text-tiny text-gray-900 dark:text-white",
             },
           }}
           placeholder="Week"
@@ -67,30 +67,56 @@ export default function MuscleRadarChart({ userId }: MuscleRadarChartProps) {
           value={period}
           onChange={(e) => setPeriod(e.target.value)}
         >
-          <SelectItem key="Week">Week</SelectItem>
-          <SelectItem key="Month">Month</SelectItem>
-          <SelectItem key="All Time">All Time</SelectItem>
+          <SelectItem
+            key="Week"
+            className="hover:bg-gray-200 dark:hover:bg-gray-600"
+          >
+            Week
+          </SelectItem>
+          <SelectItem
+            key="Month"
+            className="hover:bg-gray-200 dark:hover:bg-gray-600"
+          >
+            Month
+          </SelectItem>
+          <SelectItem
+            key="All Time"
+            className="hover:bg-gray-200 dark:hover:bg-gray-600"
+          >
+            All Time
+          </SelectItem>
         </Select>
       </div>
-      <ResponsiveContainer height={250} width="100%">
-        <RadarChart cx="50%" cy="50%" data={data} outerRadius="70%">
-          <PolarGrid stroke="#ddd" />
+      <ResponsiveContainer height={300} width="100%">
+        <RadarChart cx="50%" cy="50%" data={data} outerRadius="80%">
+          <PolarGrid stroke="#d1d5db" strokeOpacity={0.5} />{" "}
           <PolarAngleAxis
             dataKey="muscle"
-            tick={{ fill: "#555", fontSize: 10 }}
+            tick={{ fill: "#4b5563", fontSize: 12, fontWeight: "bold" }}
           />
-          <PolarRadiusAxis
+          {/* <PolarRadiusAxis
             angle={30}
             domain={[0, 100]}
-            tick={{ fill: "#777", fontSize: 10 }}
+            tick={{ fill: "#6b7280", fontSize: 10 }}
+          /> */}
+          <Tooltip
+            contentStyle={{
+              backgroundColor: "#ffffff",
+              border: "none",
+              borderRadius: "8px",
+              color: "#1f2937",
+              boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+            }}
           />
-          <Tooltip />
           <Radar
+            animationDuration={1500}
+            animationEasing="ease-in-out"
             dataKey="value"
             fill="#3b82f6"
-            fillOpacity={0.6}
+            fillOpacity={0.7}
             name="Training Frequency"
             stroke="#3b82f6"
+            strokeWidth={2}
           />
         </RadarChart>
       </ResponsiveContainer>
