@@ -10,6 +10,9 @@ import {
 
 import { WorkoutPlanEntry, WorkoutPlanProps } from "../../types/workout-plan";
 
+import axios from "@/api/axios";
+import { errorToast } from "@/types/toast";
+
 const EntryToDisplay: React.FC<{ entry: WorkoutPlanEntry }> = ({ entry }) => {
   return (
     <div className="flex flex-col bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-4 rounded-xl shadow-md w-full gap-2">
@@ -50,6 +53,29 @@ const EntryToDisplay: React.FC<{ entry: WorkoutPlanEntry }> = ({ entry }) => {
 };
 
 export const WorkoutPlan: React.FC<WorkoutPlanProps> = ({ workoutPlan }) => {
+  const handleDownloadPdf = async () => {
+    try {
+      const response = await axios.get(
+        `/WorkoutPlan/${workoutPlan.id}/DownloadPdf`,
+        {
+          responseType: "blob",
+        },
+      );
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const a = document.createElement("a");
+
+      a.href = url;
+      a.download = `${workoutPlan.name}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    } catch (error: any) {
+      errorToast("Failed to download PDF");
+    }
+  };
+
   return (
     <Card className="min-w-[280px] max-w-sm min-h-[550px] flex flex-col border border-gray-300 dark:border-gray-600 hover:border-gray-500 dark:hover:border-white rounded-xl bg-background transition-all p-6">
       <CardHeader>
@@ -91,7 +117,9 @@ export const WorkoutPlan: React.FC<WorkoutPlanProps> = ({ workoutPlan }) => {
 
         <div className="flex flex-col w-full gap-2">
           <Button className="w-full">View Workout Plan</Button>
-          <Button className="w-full">Download PDF</Button>
+          <Button className="w-full" onPress={handleDownloadPdf}>
+            Download PDF
+          </Button>
         </div>
       </CardFooter>
     </Card>
