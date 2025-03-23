@@ -1,4 +1,5 @@
 export interface WorkoutPlan {
+  id: number;
   name: string;
   createdBy: CreatedBy;
   assignedTo: AssignedTo | null;
