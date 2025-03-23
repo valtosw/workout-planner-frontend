@@ -11,6 +11,7 @@ import {
 } from "recharts";
 
 import axios from "@/api/axios";
+import { useTheme } from "@heroui/use-theme";
 
 const muscleGroups = [
   "Chest",
@@ -89,16 +90,11 @@ export default function MuscleRadarChart({ userId }: MuscleRadarChartProps) {
       </div>
       <ResponsiveContainer height={300} width="100%">
         <RadarChart cx="50%" cy="50%" data={data} outerRadius="80%">
-          <PolarGrid stroke="#d1d5db" strokeOpacity={0.5} />{" "}
+          <PolarGrid stroke="#b0b0b0" strokeOpacity={0.5} />{" "}
           <PolarAngleAxis
             dataKey="muscle"
             tick={{ fill: "#4b5563", fontSize: 12, fontWeight: "bold" }}
           />
-          {/* <PolarRadiusAxis
-            angle={30}
-            domain={[0, 100]}
-            tick={{ fill: "#6b7280", fontSize: 10 }}
-          /> */}
           <Tooltip
             contentStyle={{
               backgroundColor: "#ffffff",
@@ -112,10 +108,10 @@ export default function MuscleRadarChart({ userId }: MuscleRadarChartProps) {
             animationDuration={1500}
             animationEasing="ease-in-out"
             dataKey="value"
-            fill="#3b82f6"
+            fill="#909090"
             fillOpacity={0.7}
             name="Training Frequency"
-            stroke="#3b82f6"
+            stroke="#909090"
             strokeWidth={2}
           />
         </RadarChart>
