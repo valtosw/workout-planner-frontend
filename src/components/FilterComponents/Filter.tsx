@@ -114,11 +114,11 @@ const TrainerFilter: React.FC<FilterProps> = ({ onFilter }) => {
   };
 
   return (
-    <div className="p-4 rounded-lg">
-      <h2 className="text-lg font-semibold">Filter Trainers</h2>
-      <div className="flex flex-col md:flex-row items-stretch md:items-center gap-4">
+    <div className="p-4 rounded-lg bg-background w-full max-w-xs">
+      <h2 className="text-xl font-semibold mb-4">Filter Trainers</h2>
+      <div className="flex flex-col gap-4">
         <Slider
-          color="primary"
+          color={"foreground"}
           formatOptions={{ style: "currency", currency: "USD" }}
           label="Price Range"
           maxValue={maxPriceForSlider}
@@ -134,8 +134,9 @@ const TrainerFilter: React.FC<FilterProps> = ({ onFilter }) => {
             }
           }}
         />
+
         <Slider
-          color="primary"
+          color={"foreground"}
           label="Minimum Experience (years)"
           maxValue={maxExperience}
           minValue={0}
@@ -147,6 +148,7 @@ const TrainerFilter: React.FC<FilterProps> = ({ onFilter }) => {
             }
           }}
         />
+
         <Select
           label="Trainer Certification"
           selectedKeys={[
@@ -170,6 +172,7 @@ const TrainerFilter: React.FC<FilterProps> = ({ onFilter }) => {
           <SelectItem key="true">Certified</SelectItem>
           <SelectItem key="false">Not Certified</SelectItem>
         </Select>
+
         <Autocomplete
           isVirtualized
           defaultItems={countries.map((country) => ({
@@ -185,23 +188,20 @@ const TrainerFilter: React.FC<FilterProps> = ({ onFilter }) => {
             <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>
           )}
         </Autocomplete>
+
         <Input
           label="City"
           placeholder="Enter city"
           value={city!}
           onChange={(e) => setCity(e.target.value)}
         />
-        <div className="flex flex-col md:flex-row gap-2 md:w-auto">
-          <Button
-            className="w-full md:w-auto"
-            color="primary"
-            onPress={handleFilter}
-          >
+
+        <div className="flex flex-col gap-2">
+          <Button className="w-full bg-white text-black" onPress={handleFilter}>
             Apply
           </Button>
           <Button
-            className="w-full md:w-auto"
-            color="danger"
+            className="w-full bg-gray-700 text-white"
             onPress={resetFilter}
           >
             Reset
