@@ -64,16 +64,14 @@ const TrainersPage: React.FC = () => {
 
   return (
     <DefaultLayout>
-      <div className="w-full">
-        <div className="sticky top-4">
+      <div className="flex w-full p-4">
+        <div className="w-1/5 sticky top-4 h-screen overflow-y-auto">
           <TrainerFilter onFilter={handleFilter} />
         </div>
-      </div>
 
-      <Divider />
+        <Divider className="h-screen mx-2" orientation="vertical" />
 
-      <div className="w-full mx-auto p-4">
-        <div className="flex-1">
+        <div className="w-4/5">
           {isLoading && (
             <div className="flex justify-center items-center h-64">
               <CircularProgress color="secondary" label="Loading..." />
