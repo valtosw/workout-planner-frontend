@@ -28,7 +28,7 @@ export default function IndexPage() {
             <div className="mt-6 flex flex-wrap gap-4">
               <Button
                 as={RouterLink}
-                className="rounded-full text-black dark:text-white border-white hover:bg-white hover:text-black"
+                className="rounded-full text-black dark:hover:text-black dark:text-white border-white hover:bg-white hover:text-black"
                 size="lg"
                 to={ROUTES.WORKOUT_PLANS}
                 variant="shadow"
