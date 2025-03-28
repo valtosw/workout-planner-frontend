@@ -5,13 +5,11 @@ import {
   RadarChart,
   PolarGrid,
   PolarAngleAxis,
-  PolarRadiusAxis,
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
 
 import axios from "@/api/axios";
-import { useTheme } from "@heroui/use-theme";
 
 const muscleGroups = [
   "Chest",
