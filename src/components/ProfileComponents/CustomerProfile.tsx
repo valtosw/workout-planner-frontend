@@ -10,31 +10,9 @@ import { Trainer } from "@/types/trainer";
 import { MappedTrainers } from "@/types/trainer";
 import axios from "@/api/axios";
 
-const exercises = ["Bench Press", "Squat", "Deadlift", "Pull-Up"];
-const muscleGroups = [
-  { muscle: "Chest", frequency: 10 },
-  { muscle: "Legs", frequency: 15 },
-  { muscle: "Back", frequency: 12 },
-  { muscle: "Arms", frequency: 8 },
-  { muscle: "Shoulders", frequency: 7 },
-];
-
 const CustomerProfilePage = () => {
   const { user, auth } = useAuth();
   const [trainers, setTrainers] = useState<Trainer[]>([]);
-  const [radarData, setRadarData] = useState<
-    { subject: string; value: number }[]
-  >([]);
-
-  const [selectedExercise, setSelectedExercise] = useState("");
-  const weightProgress = selectedExercise
-    ? [
-        { date: "Jan", weight: 50 },
-        { date: "Feb", weight: 55 },
-        { date: "Mar", weight: 60 },
-        { date: "Apr", weight: 65 },
-      ]
-    : [];
 
   useEffect(() => {
     const fetchTrainers = async () => {
