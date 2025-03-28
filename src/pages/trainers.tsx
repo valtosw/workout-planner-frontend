@@ -67,8 +67,8 @@ const TrainersPage: React.FC = () => {
 
   return (
     <DefaultLayout>
-      <div className="flex w-full h-[calc(100vh-80px)]">
-        <div className="w-1/5 p-4 overflow-y-auto">
+      <div className="flex w-full h-[calc(100vh-80px)] overflow-hidden">
+        <div className="w-1/5 p-4 overflow-hidden">
           <TrainerFilter onFilter={handleFilter} />
         </div>
         <Divider className="h-full mx-2" orientation="vertical" />
