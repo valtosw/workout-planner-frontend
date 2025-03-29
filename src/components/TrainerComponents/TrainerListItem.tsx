@@ -82,8 +82,7 @@ const TrainerListItem: React.FC<TrainerBlockProps> = ({ trainer }) => {
             See more
           </Button>
           <Button
-            className="whitespace-nowrap"
-            color="primary"
+            className="text-black dark:hover:text-black dark:text-white border-white dark:hover:bg-white hover:text-black"
             onPress={() => {
               /* Handle request */
             }}
