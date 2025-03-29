@@ -197,11 +197,23 @@ const TrainerFilter: React.FC<FilterProps> = ({ onFilter }) => {
         />
 
         <div className="flex flex-col gap-2">
-          <Button className="w-full bg-white text-black" onPress={handleFilter}>
+          <Button
+            className="w-full bg-black dark:bg-white text-white dark:text-black 
+              hover:bg-gray-800 dark:hover:bg-gray-200 
+              transition-colors duration-200 
+              py-2 px-4 
+              border border-transparent dark:border-gray-300
+              focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+            onPress={handleFilter}
+          >
             Apply
           </Button>
           <Button
-            className="w-full bg-gray-700 text-white"
+            className="w-full bg-gray-200 dark:bg-gray-900 text-black dark:text-white
+            hover:bg-gray-300 dark:hover:bg-gray-800
+            transition-colors duration-200
+            py-2 px-4
+            focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
             onPress={resetFilter}
           >
             Reset
