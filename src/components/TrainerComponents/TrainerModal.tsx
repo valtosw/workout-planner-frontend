@@ -8,17 +8,17 @@ interface TrainerProfileModalProps {
   trainer: Trainer;
 }
 
-export const TrainerProfileModal = ({
-  isOpen,
-  onClose,
-  trainer,
-}: TrainerProfileModalProps) => {
-  return (
-    <Modal
-      className="bg-white dark:bg-[#18181c]"
-      isOpen={isOpen}
-      size="lg"
-      onClose={onClose}
-    />
-  );
-};
+// export const TrainerProfileModal = ({
+//   isOpen,
+//   onClose,
+//   trainer,
+// }: TrainerProfileModalProps) => {
+//   return (
+//     <Modal
+//       className="bg-white dark:bg-[#18181c]"
+//       isOpen={isOpen}
+//       size="lg"
+//       onClose={onClose}
+//     />
+//   );
+// };
