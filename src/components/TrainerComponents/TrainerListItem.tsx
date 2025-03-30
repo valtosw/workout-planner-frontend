@@ -3,6 +3,8 @@ import { Image } from "@heroui/react";
 import { Divider } from "@heroui/react";
 import { useEffect, useState } from "react";
 
+import { TrainerProfileModal } from "./TrainerModal";
+
 import {
   MoneyIcon,
   LocationIcon,
@@ -12,9 +14,32 @@ import {
 import { TrainerBlockProps } from "@/types/trainer";
 import { getCountryName } from "@/api/ModelApis/CountryApi";
 import { errorToast } from "@/types/toast";
+import useAuth from "@/hooks/useAuth";
+import { axiosPrivate } from "@/api/axios";
 
 const TrainerListItem: React.FC<TrainerBlockProps> = ({ trainer }) => {
   const [countryName, setCountryName] = useState<string>("");
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const { auth } = useAuth();
+  const [isTrainer, setIsTrainer] = useState<boolean>(false);
+
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      if (auth?.id) {
+        try {
+          const response = await axiosPrivate.get(
+            `/ApplicationUser/Role/${auth.id}`,
+          );
+
+          setIsTrainer(response.data === "Trainer");
+        } catch (error: any) {
+          errorToast(error.message);
+        }
+      }
+    };
+
+    fetchUserRole();
+  }, [auth?.id]);
 
   useEffect(() => {
     const fetchCountryName = async () => {
@@ -75,23 +100,29 @@ const TrainerListItem: React.FC<TrainerBlockProps> = ({ trainer }) => {
           <Button
             className="whitespace-nowrap"
             variant="flat"
-            onPress={() => {
-              /* Open modal or navigate to details */
-            }}
+            onPress={() => setIsModalOpen(true)}
           >
             See more
           </Button>
-          <Button
-            className="text-black dark:hover:text-black dark:text-white border-white dark:hover:bg-white hover:text-black"
-            onPress={() => {
-              /* Handle request */
-            }}
-          >
-            Send a Request
-          </Button>
+          {!isTrainer && (
+            <Button
+              className="text-black dark:hover:text-black dark:text-white border-white dark:hover:bg-white hover:text-black"
+              onPress={() => {
+                /* Handle request */
+              }}
+            >
+              Send a Request
+            </Button>
+          )}
         </div>
       </div>
       <Divider />
+
+      <TrainerProfileModal
+        isOpen={isModalOpen}
+        trainer={trainer}
+        onClose={() => setIsModalOpen(false)}
+      />
     </>
   );
 };
