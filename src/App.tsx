@@ -9,7 +9,9 @@ import ProtectedRoute from "./components/AuthComponents/ProtectedRoute";
 import ForTrainerPage from "./test/for-trainer";
 import { EmailConfirmationPage } from "./pages/StatusPages/EmailConfirmation";
 import CustomerProfilePage from "./components/ProfileComponents/CustomerProfile";
+import TrainerProfilePage from "./components/ProfileComponents/TrainerProfile";
 
+import ProfilePage from "./pages/Profile";
 import { LoadingPage } from "@/pages/StatusPages/LoadingPage";
 import { NotFoundPage } from "@/pages/StatusPages/NotFoundPage";
 import TrainersPage from "@/pages/Trainers";
@@ -37,11 +39,10 @@ function App() {
           <Route element={<ProtectedRoute allowedRoles={["Customer"]} />}>
             <Route element={<ForCustomerPage />} path="/for-customer" />
           </Route>
-          <Route element={<ProtectedRoute allowedRoles={["Customer"]} />}>
-            <Route
-              element={<CustomerProfilePage />}
-              path={ROUTES.CUSTOMER_PROFILE}
-            />
+          <Route
+            element={<ProtectedRoute allowedRoles={["Customer", "Trainer"]} />}
+          >
+            <Route element={<ProfilePage />} path={ROUTES.PROFILE} />
           </Route>
           <Route element={<ProtectedRoute allowedRoles={["Trainer"]} />}>
             <Route element={<ForTrainerPage />} path="/for-trainer" />
