@@ -60,7 +60,6 @@ export const LoginForm = () => {
 
       navigate(ROUTES.TRAINERS);
     } catch (error: any) {
-      // errorToast(error.response?.data?.message || "Login failed");
       setErrorMessage(error.response?.data?.message || "Login failed");
     } finally {
       setLoading(false);
@@ -165,27 +164,6 @@ export const LoginForm = () => {
             Sign In
           </Button>
         </Form>
-        <div className="flex items-center gap-4 py-2">
-          <Divider className="flex-1" />
-          <p className="shrink-0 text-tiny text-default-500">OR</p>
-          <Divider className="flex-1" />
-        </div>
-        <div className="flex flex-col gap-2">
-          <Button
-            startContent={<Icon icon="flat-color-icons:google" width={24} />}
-            variant="bordered"
-          >
-            Continue with Google
-          </Button>
-        </div>
-        <div className="flex flex-col gap-2">
-          <Button
-            startContent={<FacebookIcon2 width={24} />}
-            variant="bordered"
-          >
-            Continue with Facebook
-          </Button>
-        </div>
         <p className="text-center text-small pb-4">
           Need to create an account?&nbsp;
           <Link as={RouterLink} size="sm" to={ROUTES.SIGNUP}>
