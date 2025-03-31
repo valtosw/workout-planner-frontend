@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
-import { Avatar, Button, Divider, User } from "@heroui/react";
+import { Avatar, Button, Card, Divider, Image } from "@heroui/react";
 
 import MuscleRadarChart from "./MuscleRadarChart";
 import ExerciseLineChart from "./ExerciseLineChart";
 
 import { TrainerProfileModal } from "@/components/TrainerComponents/TrainerModal";
-import { Navbar } from "@/components/NavbarComponents/Navbar";
 import useAuth from "@/hooks/useAuth";
 import { Trainer } from "@/types/trainer";
 import { MappedTrainers } from "@/types/trainer";
@@ -24,6 +23,7 @@ const CustomerProfilePage = () => {
         const response = await axios.get(
           `/Customer/PersonalTrainers/${auth?.id}`,
         );
+
         setTrainers(MappedTrainers(response.data));
       } catch (error: any) {
         console.error(error);
@@ -51,7 +51,9 @@ const CustomerProfilePage = () => {
         <Divider className="w-full" />
         <div className="flex" style={{ height: "calc(100vh - 180px)" }}>
           <div className="flex-1 pr-6">
-            <h3 className="text-lg font-semibold pb-4">My Statistics</h3>
+            <h3 className="text-2xl font-semibold tracking-wide text-gray-900 dark:text-gray-100">
+              My Statistics
+            </h3>
             <div className="bg-background p-6 rounded-lg h-full">
               <div className="flex gap-6 h-full">
                 <div className="w-3/5">
@@ -68,27 +70,28 @@ const CustomerProfilePage = () => {
 
           <div className="w-60 pl-6 flex flex-col">
             <h3 className="text-lg font-semibold pb-4">My Trainers</h3>
-            <div className="flex-1 overflow-y-auto pr-2">
-              {trainers.map((trainer) => (
-                <div
-                  key={`${trainer.firstName}-${trainer.lastName}`}
-                  className="mb-4 last:mb-0"
-                >
-                  <button
-                    className="w-full text-left"
-                    onClick={() => handleTrainerClick(trainer)}
+            <div className="flex-1 overflow-y-auto pr-2 bg-background">
+              <div className="flex flex-col gap-2 bg-background">
+                {trainers.map((trainer) => (
+                  <Card
+                    key={`${trainer.firstName}-${trainer.lastName}`}
+                    isPressable
+                    className="w-full text-left bg-background p-1 flex items-center gap-3 hover:bg-gray-100 dark:hover:bg-gray-800"
+                    onPress={() => handleTrainerClick(trainer)}
                   >
-                    <User
-                      avatarProps={{
-                        src: trainer.photoUrl,
-                        className: "hover:opacity-80 transition-opacity",
-                      }}
-                      className="hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg p-2 w-full flex items-center"
-                      name={trainer.firstName + " " + trainer.lastName}
-                    />
-                  </button>
-                </div>
-              ))}
+                    <div className="flex items-center gap-3 w-full">
+                      <Image
+                        alt={trainer.firstName}
+                        className="w-12 h-12 hover:opacity-80 transition-opacity"
+                        src={trainer.photoUrl}
+                      />
+                      <span className="text-sm font-medium">
+                        {trainer.firstName + " " + trainer.lastName}
+                      </span>
+                    </div>
+                  </Card>
+                ))}
+              </div>
             </div>
           </div>
         </div>
