@@ -99,7 +99,7 @@ export const AuthorizedNavbar = () => {
                   as={RouterLink}
                   className="flex flex-col items-start"
                   color="foreground"
-                  to={ROUTES.CUSTOMER_PROFILE}
+                  to={ROUTES.PROFILE}
                 >
                   <span>Signed in as</span>
                   <span>{auth?.email}</span>
