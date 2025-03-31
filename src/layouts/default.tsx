@@ -10,7 +10,7 @@ export default function DefaultLayout({
   return (
     <div className="relative flex flex-col h-screen">
       <Navbar />
-      <main className="mx-auto w-full px-6 flex-grow pt-5 overflow-hidden">
+      <main className="mx-auto w-full px-6 flex-grow pt-5">
         <ToastProvider />
         {children}
       </main>
