@@ -49,7 +49,7 @@ export const TrainerProfileModal = ({
           <>
             <ModalBody className="p-6">
               <div className="flex items-center gap-4 mb-6">
-                <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-gray-300 dark:border-gray-600 flex-shrink-0">
+                <div className="w-20 h-20 overflow-hidden flex-shrink-0">
                   <Image
                     alt={`${trainer.firstName} ${trainer.lastName}`}
                     className="w-full h-full object-cover"
