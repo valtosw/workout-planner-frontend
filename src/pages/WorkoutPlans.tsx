@@ -13,7 +13,7 @@ const WorkoutPlansPage: React.FC = () => {
       <h1 className="text-3xl font-extrabold tracking-wide text-gray-900 dark:text-gray-100 mb-4">
         Your Workout Plans
       </h1>
-      <div className="h-full flex items-start min-h-screen ">
+      <div className="h-full flex items-start ">
         <CreateWorkoutPlanCard />
         <Spacer x={4} />
 
