@@ -3,6 +3,7 @@ import { Avatar, Button, Card, Divider, Image } from "@heroui/react";
 
 import MuscleRadarChart from "./MuscleRadarChart";
 import ExerciseLineChart from "./ExerciseLineChart";
+import { EditProfileModal } from "./EditProfileModal";
 
 import { TrainerProfileModal } from "@/components/TrainerComponents/TrainerModal";
 import useAuth from "@/hooks/useAuth";
@@ -15,7 +16,9 @@ const CustomerProfilePage = () => {
   const { user, auth } = useAuth();
   const [trainers, setTrainers] = useState<Trainer[]>([]);
   const [selectedTrainer, setSelectedTrainer] = useState<Trainer | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isTrainerModalOpen, setIsTrainerModalOpen] = useState(false);
+  const [isEditProfileModalOpen, setIsEditProfileModalOpen] = useState(false);
+  const [firstName, lastName] = (user?.fullName || "").split(" ");
 
   useEffect(() => {
     const fetchTrainers = async () => {
@@ -35,8 +38,10 @@ const CustomerProfilePage = () => {
 
   const handleTrainerClick = (trainer: Trainer) => {
     setSelectedTrainer(trainer);
-    setIsModalOpen(true);
+    setIsTrainerModalOpen(true);
   };
+
+  const handleSaveProfile = async (formData: FormData) => {};
 
   return (
     <DefaultLayout>
@@ -46,7 +51,9 @@ const CustomerProfilePage = () => {
             <Avatar size="lg" src={user?.profilePicture} />
             <h2 className="text-xl font-semibold">{user?.fullName}</h2>
           </div>
-          <Button>Edit Profile</Button>
+          <Button onPress={() => setIsEditProfileModalOpen(true)}>
+            Edit Profile
+          </Button>
         </div>
         <Divider className="w-full" />
         <div className="flex" style={{ height: "calc(100vh - 180px)" }}>
@@ -99,9 +106,22 @@ const CustomerProfilePage = () => {
 
       {selectedTrainer && (
         <TrainerProfileModal
-          isOpen={isModalOpen}
+          isOpen={isTrainerModalOpen}
           trainer={selectedTrainer}
-          onClose={() => setIsModalOpen(false)}
+          onClose={() => setIsTrainerModalOpen(false)}
+        />
+      )}
+
+      {user && (
+        <EditProfileModal
+          currentUser={{
+            firstName: firstName,
+            lastName: lastName,
+            profilePictureUrl: user.profilePicture,
+          }}
+          isOpen={isEditProfileModalOpen}
+          onClose={() => setIsEditProfileModalOpen(false)}
+          onSave={handleSaveProfile}
         />
       )}
     </DefaultLayout>
