@@ -1,3 +1,4 @@
+import axios from "@/api/axios";
 import {
   Modal,
   ModalContent,
@@ -13,25 +14,22 @@ import { useState } from "react";
 interface EditProfileModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (data: FormData) => void;
   currentUser: {
     firstName: string;
     lastName: string;
     profilePictureUrl: string;
   };
+  userId: string;
 }
 
 export const EditProfileModal = ({
   isOpen,
   onClose,
-  onSave,
   currentUser,
+  userId,
 }: EditProfileModalProps) => {
   const [firstName, setFirstName] = useState(currentUser.firstName || "");
   const [lastName, setLastName] = useState(currentUser.lastName || "");
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState(
     currentUser.profilePictureUrl || "",
@@ -46,19 +44,28 @@ export const EditProfileModal = ({
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const formData = new FormData();
 
-    if (profileImage) formData.append("profileImage", profileImage);
-    formData.append("firstName", firstName);
-    formData.append("lastName", lastName);
-    if (currentPassword && newPassword === confirmPassword) {
-      formData.append("currentPassword", currentPassword);
-      formData.append("newPassword", newPassword);
-    }
+    formData.append("Id", userId);
+    formData.append("FirstName", firstName);
+    formData.append("LastName", lastName);
+    if (profileImage) formData.append("ProfilePicture", profileImage);
 
-    onSave(formData);
-    onClose();
+    try {
+      const response = await axios.post(
+        "/Customer/UpdateCustomerProfile",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        },
+      );
+      
+      setPreviewUrl(response.data.profilePictureUrl);
+      onClose();
+    } catch (error) {
+      console.error("Error updating profile:", error);
+    }
   };
 
   return (
@@ -87,26 +94,6 @@ export const EditProfileModal = ({
               label="Last Name"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
-            />
-          </div>
-          <div className="flex flex-col gap-3 mt-4">
-            <Input
-              label="Current Password"
-              type="password"
-              value={currentPassword}
-              onChange={(e) => setCurrentPassword(e.target.value)}
-            />
-            <Input
-              label="New Password"
-              type="password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-            />
-            <Input
-              label="Confirm New Password"
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
             />
           </div>
         </ModalBody>
