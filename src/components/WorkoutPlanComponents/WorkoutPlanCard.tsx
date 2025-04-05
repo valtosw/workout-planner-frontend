@@ -1,17 +1,7 @@
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  User,
-  Button,
-  Tooltip,
-} from "@heroui/react";
+import { Card, CardHeader, CardBody, Tooltip } from "@heroui/react";
 
 import { WorkoutPlanEntry, WorkoutPlanProps } from "../../types/workout-plan";
 
-import axios from "@/api/axios";
-import { errorToast } from "@/types/toast";
 import { SettingsDropdown } from "./SettingsDropdown";
 
 const EntryToDisplay: React.FC<{ entry: WorkoutPlanEntry }> = ({ entry }) => {
