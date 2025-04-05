@@ -80,7 +80,9 @@ export const AuthorizedNavbar = () => {
         </NavbarContent>
 
         <NavbarContent justify="end">
-          <ThemeSwitch />
+          <div className="hidden">
+            <ThemeSwitch />
+          </div>
           <Dropdown placement="bottom-end">
             <DropdownTrigger>
               <Avatar
