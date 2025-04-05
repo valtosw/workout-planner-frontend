@@ -1,23 +1,15 @@
 import {
-  Autocomplete,
-  AutocompleteItem,
   Button,
   Card,
   Input,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
   useDisclosure,
   Drawer,
   DrawerContent,
   DrawerHeader,
   DrawerBody,
   DrawerFooter,
-  Spacer,
 } from "@heroui/react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { CheckIcon, EditIcon, PlusIcon } from "../icons";
 
@@ -25,7 +17,6 @@ import { WorkoutPlanEntry } from "./WorkoutPlanEntry";
 
 import { errorToast } from "@/types/toast";
 import { getMuscleGroupList } from "@/api/ModelApis/MuscleGroupApi";
-import { WorkoutPlan } from "./WorkoutPlanCard";
 
 export const CreateWorkoutPlanCard = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
