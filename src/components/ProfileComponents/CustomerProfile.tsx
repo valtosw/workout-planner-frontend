@@ -41,8 +41,6 @@ const CustomerProfilePage = () => {
     setIsTrainerModalOpen(true);
   };
 
-  const handleSaveProfile = async (formData: FormData) => {};
-
   return (
     <DefaultLayout>
       <div className="p-6 space-y-6">
@@ -120,8 +118,8 @@ const CustomerProfilePage = () => {
             profilePictureUrl: user.profilePicture,
           }}
           isOpen={isEditProfileModalOpen}
+          userId={auth?.id || ""}
           onClose={() => setIsEditProfileModalOpen(false)}
-          onSave={handleSaveProfile}
         />
       )}
     </DefaultLayout>
