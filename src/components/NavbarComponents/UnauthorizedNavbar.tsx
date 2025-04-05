@@ -40,7 +40,9 @@ export const UnauthorizedNavbar = () => {
         </NavbarContent>
 
         <NavbarContent justify="end">
-          <ThemeSwitch />
+          <div className="hidden">
+            <ThemeSwitch />
+          </div>
           <>
             <NavbarItem>
               <Button as={RouterLink} to={ROUTES.LOGIN} variant="flat">
