@@ -15,13 +15,32 @@ import { TrainerBlockProps } from "@/types/trainer";
 import { getCountryName } from "@/api/ModelApis/CountryApi";
 import { errorToast } from "@/types/toast";
 import useAuth from "@/hooks/useAuth";
-import { axiosPrivate } from "@/api/axios";
+import axios, { axiosPrivate } from "@/api/axios";
 
 const TrainerListItem: React.FC<TrainerBlockProps> = ({ trainer }) => {
   const [countryName, setCountryName] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const { auth } = useAuth();
   const [isTrainer, setIsTrainer] = useState<boolean>(false);
+  const [requestStatus, setRequestStatus] = useState<string>("");
+
+  const getRequestStatus = async (userId: string, trainerId: string) => {
+    try {
+      const response = await axios.get(
+        `/TrainerRequest/RequestStatus/${userId}/${trainerId}`,
+      );
+
+      setRequestStatus(response.data.status);
+    } catch (error: any) {
+      errorToast(error.message);
+    }
+  };
+
+  useEffect(() => {
+    (async () => {
+      await getRequestStatus(auth?.id || "", trainer.id);
+    })();
+  }, [auth?.id, trainer.id]);
 
   useEffect(() => {
     const fetchUserRole = async () => {
@@ -54,6 +73,16 @@ const TrainerListItem: React.FC<TrainerBlockProps> = ({ trainer }) => {
 
     fetchCountryName();
   }, [trainer.countryId]);
+
+  const handleSendRequest = async (trainerId: string, userId: string) => {
+    try {
+      const res = await axios.post(
+        `/TrainerRequest/SendRequest/${userId}/${trainerId}`,
+      );
+    } catch (error: any) {
+      errorToast(error.message);
+    }
+  };
 
   return (
     <>
@@ -104,16 +133,20 @@ const TrainerListItem: React.FC<TrainerBlockProps> = ({ trainer }) => {
           >
             See more
           </Button>
-          {!isTrainer && (
-            <Button
-              className="text-black dark:hover:text-black dark:text-white border-white dark:hover:bg-white hover:text-black"
-              onPress={() => {
-                /* Handle request */
-              }}
-            >
-              Send a Request
-            </Button>
-          )}
+          {!isTrainer &&
+            (!requestStatus ? (
+              <Button
+                className="text-black dark:hover:text-black dark:text-white border-white dark:hover:bg-white hover:text-black"
+                onPress={() => {
+                  handleSendRequest(trainer.id, auth?.id || "");
+                  getRequestStatus(auth?.id || "", trainer.id);
+                }}
+              >
+                Send a Request
+              </Button>
+            ) : (
+              <p>{`Request Status: ${requestStatus}`}</p>
+            ))}
         </div>
       </div>
       <Divider />
