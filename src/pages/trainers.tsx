@@ -81,10 +81,7 @@ const TrainersPage: React.FC = () => {
             ) : trainers.length > 0 ? (
               <div>
                 {trainers.slice(0, visibleCount).map((trainer) => (
-                  <TrainerListItem
-                    key={`${trainer.firstName}-${trainer.lastName}`}
-                    trainer={trainer}
-                  />
+                  <TrainerListItem key={trainer.id} trainer={trainer} />
                 ))}
               </div>
             ) : (
