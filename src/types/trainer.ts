@@ -1,4 +1,5 @@
 export interface Trainer {
+  id: string;
   firstName: string;
   lastName: string;
   photoUrl: string;
@@ -23,6 +24,7 @@ export interface FilterProps {
 
 export const MappedTrainers = (data: any[]): Trainer[] => {
   return data.map((trainer) => ({
+    id: trainer.id,
     firstName: trainer.firstName,
     lastName: trainer.lastName,
     photoUrl: trainer.profilePicture,
