@@ -8,10 +8,9 @@ import ForCustomerPage from "./test/for-customer";
 import ProtectedRoute from "./components/AuthComponents/ProtectedRoute";
 import ForTrainerPage from "./test/for-trainer";
 import { EmailConfirmationPage } from "./pages/StatusPages/EmailConfirmation";
-import CustomerProfilePage from "./components/ProfileComponents/CustomerProfile";
-import TrainerProfilePage from "./components/ProfileComponents/TrainerProfile";
-
 import ProfilePage from "./pages/Profile";
+import { EditTrainerProfile } from "./components/ProfileComponents/EditTrainerProfile";
+
 import { LoadingPage } from "@/pages/StatusPages/LoadingPage";
 import { NotFoundPage } from "@/pages/StatusPages/NotFoundPage";
 import TrainersPage from "@/pages/Trainers";
@@ -43,6 +42,12 @@ function App() {
             element={<ProtectedRoute allowedRoles={["Customer", "Trainer"]} />}
           >
             <Route element={<ProfilePage />} path={ROUTES.PROFILE} />
+          </Route>
+          <Route element={<ProtectedRoute allowedRoles={["Trainer"]} />}>
+            <Route
+              element={<EditTrainerProfile />}
+              path={ROUTES.EDIT_TRAINER_PROFILE}
+            />
           </Route>
           <Route element={<ProtectedRoute allowedRoles={["Trainer"]} />}>
             <Route element={<ForTrainerPage />} path="/for-trainer" />

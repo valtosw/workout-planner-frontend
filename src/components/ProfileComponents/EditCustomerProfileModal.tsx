@@ -1,4 +1,3 @@
-import axios from "@/api/axios";
 import {
   Modal,
   ModalContent,
@@ -11,7 +10,9 @@ import {
 } from "@heroui/react";
 import { useState } from "react";
 
-interface EditProfileModalProps {
+import axios from "@/api/axios";
+
+interface EditCustomerProfileModalProps {
   isOpen: boolean;
   onClose: () => void;
   currentUser: {
@@ -22,12 +23,12 @@ interface EditProfileModalProps {
   userId: string;
 }
 
-export const EditProfileModal = ({
+export const EditCustomerProfileModal = ({
   isOpen,
   onClose,
   currentUser,
   userId,
-}: EditProfileModalProps) => {
+}: EditCustomerProfileModalProps) => {
   const [firstName, setFirstName] = useState(currentUser.firstName || "");
   const [lastName, setLastName] = useState(currentUser.lastName || "");
   const [profileImage, setProfileImage] = useState<File | null>(null);
@@ -60,7 +61,7 @@ export const EditProfileModal = ({
           headers: { "Content-Type": "multipart/form-data" },
         },
       );
-      
+
       setPreviewUrl(response.data.profilePictureUrl);
       onClose();
     } catch (error) {

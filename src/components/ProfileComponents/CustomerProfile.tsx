@@ -3,7 +3,7 @@ import { Avatar, Button, Card, Divider, Image } from "@heroui/react";
 
 import MuscleRadarChart from "./MuscleRadarChart";
 import ExerciseLineChart from "./ExerciseLineChart";
-import { EditProfileModal } from "./EditProfileModal";
+import { EditCustomerProfileModal } from "./EditCustomerProfileModal";
 
 import { TrainerProfileModal } from "@/components/TrainerComponents/TrainerModal";
 import useAuth from "@/hooks/useAuth";
@@ -111,7 +111,7 @@ const CustomerProfilePage = () => {
       )}
 
       {user && (
-        <EditProfileModal
+        <EditCustomerProfileModal
           currentUser={{
             firstName: firstName,
             lastName: lastName,
