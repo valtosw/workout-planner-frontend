@@ -8,4 +8,5 @@ export const ROUTES = {
   FORGOT_PASSWORD: "/forgot-password",
   RESET_PASSWORD: "/reset-password",
   PROFILE: "/profile",
+  EDIT_TRAINER_PROFILE: "/edit-trainer-profile",
 };
