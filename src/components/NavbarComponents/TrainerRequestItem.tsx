@@ -77,10 +77,20 @@ const TrainerRequestItem: React.FC<TrainerRequestItemProps> = ({
       </div>
       {role === "Trainer" && req.status === "Pending" && (
         <div className="flex gap-2">
-          <Button color="success" size="sm" onPress={handleAccept}>
+          <Button
+            color="success"
+            size="md"
+            variant="flat"
+            onPress={handleAccept}
+          >
             Accept
           </Button>
-          <Button color="danger" size="sm" onPress={handleReject}>
+          <Button
+            color="danger"
+            size="md"
+            variant="flat"
+            onPress={handleReject}
+          >
             Reject
           </Button>
         </div>
