@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import { Avatar, Button, Divider, Card, Image, Tooltip } from "@heroui/react";
+import { Link as RouterLink } from "react-router-dom";
 
 import { InfoIcon } from "../icons";
 
 import MuscleRadarChart from "./MuscleRadarChart";
 import ExerciseLineChart from "./ExerciseLineChart";
-import { EditTrainerProfile } from "./EditTrainerProfile";
-import {Link as RouterLink} from "react-router-dom";
 
 import useAuth from "@/hooks/useAuth";
 import axios from "@/api/axios";
@@ -33,6 +32,7 @@ interface TrainerInfo {
   instagramLink?: string;
   facebookLink?: string;
   telegramLink?: string;
+  isPosted: boolean;
 }
 
 const TrainerProfilePage = () => {
@@ -42,8 +42,6 @@ const TrainerProfilePage = () => {
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(
     null,
   );
-  const [isEditProfileModalOpen, setIsEditProfileModalOpen] = useState(false);
-  const [firstName, lastName] = (user?.fullName || "").split(" ");
 
   useEffect(() => {
     const fetchCustomers = async () => {
@@ -77,6 +75,16 @@ const TrainerProfilePage = () => {
 
   const handleCustomerClick = (customer: Customer) => {
     setSelectedCustomer(customer);
+  };
+
+  const handleUpdatePost = async () => {
+    try {
+      const response = await axios.put(`/Trainer/UpdatePost/${auth?.id}`);
+
+      setTrainerInfo(response.data);
+    } catch (error: any) {
+      console.error(error);
+    }
   };
 
   return (
@@ -132,9 +140,14 @@ const TrainerProfilePage = () => {
               </Button>
             </Tooltip>
           </div>
-          <Button as={RouterLink} to={ROUTES.EDIT_TRAINER_PROFILE}>
-            Edit Profile
-          </Button>
+          <div className="flex gap-2">
+            <Button as={RouterLink} to={ROUTES.EDIT_TRAINER_PROFILE}>
+              Edit Profile
+            </Button>
+            <Button onPress={() => handleUpdatePost()}>
+              {trainerInfo?.isPosted ? "Unpost Profile" : "Post Profile"}
+            </Button>
+          </div>
         </div>
 
         <Divider className="w-full" />
