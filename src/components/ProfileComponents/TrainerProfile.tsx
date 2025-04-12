@@ -79,9 +79,11 @@ const TrainerProfilePage = () => {
 
   const handleUpdatePost = async () => {
     try {
-      const response = await axios.put(`/Trainer/UpdatePost/${auth?.id}`);
+      await axios.put(`/Trainer/UpdatePost/${auth?.id}`);
 
-      setTrainerInfo(response.data);
+      setTrainerInfo((prev) =>
+        prev ? { ...prev, isPosted: !prev.isPosted } : prev,
+      );
     } catch (error: any) {
       console.error(error);
     }
