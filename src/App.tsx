@@ -10,6 +10,7 @@ import ForTrainerPage from "./test/for-trainer";
 import { EmailConfirmationPage } from "./pages/StatusPages/EmailConfirmation";
 import ProfilePage from "./pages/Profile";
 import { EditTrainerProfile } from "./components/ProfileComponents/EditTrainerProfile";
+import ProgressLoggingPage from "./pages/ProgressLogging";
 
 import { LoadingPage } from "@/pages/StatusPages/LoadingPage";
 import { NotFoundPage } from "@/pages/StatusPages/NotFoundPage";
@@ -43,6 +44,12 @@ function App() {
           >
             <Route element={<ProfilePage />} path={ROUTES.PROFILE} />
           </Route>
+          <Route element={<ProtectedRoute allowedRoles={["Customer"]} />}>
+            <Route
+              element={<ProgressLoggingPage />}
+              path={ROUTES.PROGRESS_LOGGING}
+            />
+          </Route>
           <Route element={<ProtectedRoute allowedRoles={["Trainer"]} />}>
             <Route
               element={<EditTrainerProfile />}
@@ -59,7 +66,6 @@ function App() {
             <Route element={<TrainersPage />} path={ROUTES.TRAINERS} />
           </Route>
         </Route>
-
         <Route
           element={<EmailConfirmationPage />}
           path={ROUTES.EMAIL_CONFIRMATION}
