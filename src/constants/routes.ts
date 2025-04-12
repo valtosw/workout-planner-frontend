@@ -9,4 +9,5 @@ export const ROUTES = {
   RESET_PASSWORD: "/reset-password",
   PROFILE: "/profile",
   EDIT_TRAINER_PROFILE: "/edit-trainer-profile",
+  PROGRESS_LOGGING: "/progress-logging",
 };
