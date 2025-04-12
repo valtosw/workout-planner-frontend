@@ -90,11 +90,11 @@ export const AuthorizedNavbar = () => {
         </NavbarContent>
 
         <NavbarContent className="hidden sm:flex gap-4" justify="center">
-          <NavbarItem isActive={location.pathname === "/workout-plans"}>
+          <NavbarItem isActive={location.pathname === ROUTES.WORKOUT_PLANS}>
             <Link
               as={RouterLink}
               color={
-                location.pathname === "/workout-plans"
+                location.pathname === ROUTES.WORKOUT_PLANS
                   ? "secondary"
                   : "foreground"
               }
@@ -103,17 +103,36 @@ export const AuthorizedNavbar = () => {
               Workout Plans
             </Link>
           </NavbarItem>
-          <NavbarItem isActive={location.pathname === "/trainers"}>
+          <NavbarItem isActive={location.pathname === ROUTES.TRAINERS}>
             <Link
               as={RouterLink}
               color={
-                location.pathname === "/trainers" ? "secondary" : "foreground"
+                location.pathname === ROUTES.TRAINERS
+                  ? "secondary"
+                  : "foreground"
               }
               to={ROUTES.TRAINERS}
             >
               Trainers
             </Link>
           </NavbarItem>
+          {role === "Customer" && (
+            <NavbarItem
+              isActive={location.pathname === ROUTES.PROGRESS_LOGGING}
+            >
+              <Link
+                as={RouterLink}
+                color={
+                  location.pathname === ROUTES.PROGRESS_LOGGING
+                    ? "secondary"
+                    : "foreground"
+                }
+                to={ROUTES.PROGRESS_LOGGING}
+              >
+                Progress Logging
+              </Link>
+            </NavbarItem>
+          )}
         </NavbarContent>
 
         <NavbarContent justify="end">
