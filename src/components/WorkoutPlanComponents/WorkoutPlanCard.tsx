@@ -6,7 +6,7 @@ import { SettingsDropdown } from "./SettingsDropdown";
 
 const EntryToDisplay: React.FC<{ entry: WorkoutPlanEntry }> = ({ entry }) => {
   return (
-    <div className="flex flex-col bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-4 rounded-xl shadow-md w-full gap-2">
+    <div className="flex flex-col border text-gray-900 dark:text-gray-100 p-4 rounded-xl shadow-md w-full gap-2">
       <div className="flex items-center gap-3">
         <span className="font-semibold text-blue-600 dark:text-blue-400 text-xs px-2 py-1 bg-gray-200 dark:bg-gray-800 rounded-lg">
           {entry.muscleGroup}
@@ -43,12 +43,16 @@ const EntryToDisplay: React.FC<{ entry: WorkoutPlanEntry }> = ({ entry }) => {
   );
 };
 
-export const WorkoutPlan: React.FC<WorkoutPlanProps> = ({ workoutPlan }) => {
+interface WorkoutPlanDelProps extends WorkoutPlanProps {
+  onDelete: (id: number) => void;
+}
+
+export const WorkoutPlan: React.FC<WorkoutPlanDelProps> = ({ workoutPlan, onDelete }) => {
   return (
     <Card className="min-w-[280px] max-w-sm h-[550px] flex flex-col border border-gray-300 dark:border-gray-600 hover:border-gray-500 dark:hover:border-white rounded-xl bg-background transition-all p-6">
       <CardHeader className="flex justify-between items-center">
         <h1 className="text-xl font-semibold">{workoutPlan.name}</h1>
-        <SettingsDropdown workoutPlan={workoutPlan} />
+        <SettingsDropdown workoutPlan={workoutPlan} onDelete={onDelete} />
       </CardHeader>
 
       <CardBody className="flex flex-col gap-3 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-800 max-h-[400px]">
