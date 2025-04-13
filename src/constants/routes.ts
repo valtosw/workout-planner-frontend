@@ -10,4 +10,5 @@ export const ROUTES = {
   PROFILE: "/profile",
   EDIT_TRAINER_PROFILE: "/edit-trainer-profile",
   PROGRESS_LOGGING: "/progress-logging",
+  CREATE_WORKOUT_PLAN: "/create-workout-plan",
 };
