@@ -10,3 +10,14 @@ export const errorToast = (message: string) => {
     shouldShowTimeoutProgess: true,
   });
 };
+
+export const successToast = (message: string) => {
+  return addToast({
+    color: "success",
+    title: "Success",
+    description: message,
+    radius: "md",
+    timeout: 1500,
+    shouldShowTimeoutProgess: true,
+  });
+};
