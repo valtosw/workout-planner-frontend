@@ -11,6 +11,7 @@ import { EmailConfirmationPage } from "./pages/StatusPages/EmailConfirmation";
 import ProfilePage from "./pages/Profile";
 import { EditTrainerProfile } from "./components/ProfileComponents/EditTrainerProfile";
 import ProgressLoggingPage from "./pages/ProgressLogging";
+import CreateWorkoutPlanPage from "./pages/CreateWorkoutPlan";
 
 import { LoadingPage } from "@/pages/StatusPages/LoadingPage";
 import { NotFoundPage } from "@/pages/StatusPages/NotFoundPage";
@@ -64,6 +65,10 @@ function App() {
           >
             <Route element={<WorkoutPlansPage />} path={ROUTES.WORKOUT_PLANS} />
             <Route element={<TrainersPage />} path={ROUTES.TRAINERS} />
+            <Route
+              element={<CreateWorkoutPlanPage />}
+              path={ROUTES.CREATE_WORKOUT_PLAN}
+            />
           </Route>
         </Route>
         <Route
