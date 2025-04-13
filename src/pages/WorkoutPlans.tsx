@@ -1,7 +1,7 @@
 import { Spacer } from "@heroui/react";
 
 import DefaultLayout from "@/layouts/Default";
-import { CreateWorkoutPlanCard } from "@/components/WorkoutPlanComponents/CreateWorkoutPlan";
+import { CreateWorkoutPlanCard } from "@/components/WorkoutPlanComponents/CreateWorkoutPlanCard";
 import { WorkoutPlanList } from "@/components/WorkoutPlanComponents/WorkoutPlanList";
 import useAuth from "@/hooks/useAuth";
 
