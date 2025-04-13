@@ -4,12 +4,12 @@ import {
   Autocomplete,
   AutocompleteItem,
   Button,
-  Checkbox,
   DatePicker,
 } from "@heroui/react";
-import { CalendarDate, DateValue, parseDate, getLocalTimeZone } from "@internationalized/date";
-import axios from "@/api/axios";
+import { CalendarDate, parseDate } from "@internationalized/date";
 
+import axios from "@/api/axios";
+import { successToast } from "@/types/toast";
 
 interface ProgressLogDto {
   ExerciseName: string;
@@ -22,7 +22,7 @@ const ProgressLogForm: React.FC<{ userId: string }> = ({ userId }) => {
   const [selectedExercise, setSelectedExercise] = useState<string>("");
   const [weight, setWeight] = useState<number>(0);
   const [selectedDate, setSelectedDate] = useState<CalendarDate>(
-    parseDate(new Date().toISOString().split("T")[0])
+    parseDate(new Date().toISOString().split("T")[0]),
   );
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -81,6 +81,7 @@ const ProgressLogForm: React.FC<{ userId: string }> = ({ userId }) => {
         },
       });
       handleClear();
+      successToast("Progress logged successfully");
     } catch (error) {
       console.error("Error logging progress:", error);
     } finally {
@@ -102,6 +103,7 @@ const ProgressLogForm: React.FC<{ userId: string }> = ({ userId }) => {
         <Autocomplete
           isRequired
           isVirtualized
+          errorMessage="Please select an exercise"
           label="Exercise"
           placeholder={"Select exercise"}
           onInputChange={onInputChange}
