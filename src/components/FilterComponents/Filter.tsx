@@ -149,7 +149,7 @@ const TrainerFilter: React.FC<FilterProps> = ({ onFilter }) => {
           }}
         />
 
-        <Select
+        {/* <Select
           label="Trainer Certification"
           selectedKeys={[
             isCertified === true
@@ -171,7 +171,7 @@ const TrainerFilter: React.FC<FilterProps> = ({ onFilter }) => {
           <SelectItem key="null">All</SelectItem>
           <SelectItem key="true">Certified</SelectItem>
           <SelectItem key="false">Not Certified</SelectItem>
-        </Select>
+        </Select> */}
 
         <Autocomplete
           isVirtualized
@@ -208,7 +208,7 @@ const TrainerFilter: React.FC<FilterProps> = ({ onFilter }) => {
           >
             Apply
           </Button>
-          <Button color="danger" variant="flat" onPress={resetFilter}>
+          <Button className="border" variant="light" onPress={resetFilter}>
             Reset
           </Button>
         </div>
