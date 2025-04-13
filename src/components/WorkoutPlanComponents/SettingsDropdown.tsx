@@ -7,12 +7,19 @@ import {
   User,
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import axios from "axios";
 
+import axios from "@/api/axios";
 import { WorkoutPlanProps } from "@/types/workout-plan";
-import { errorToast } from "@/types/toast";
+import { errorToast, successToast } from "@/types/toast";
 
-export const SettingsDropdown = ({ workoutPlan }: WorkoutPlanProps) => {
+interface SettingsDropdownProps extends WorkoutPlanProps {
+  onDelete: (id: number) => void;
+}
+
+export const SettingsDropdown = ({
+  workoutPlan,
+  onDelete,
+}: SettingsDropdownProps) => {
   const handleDownloadPdf = async () => {
     try {
       const response = await axios.get(
@@ -33,6 +40,16 @@ export const SettingsDropdown = ({ workoutPlan }: WorkoutPlanProps) => {
       window.URL.revokeObjectURL(url);
     } catch (error: any) {
       errorToast("Failed to download PDF");
+    }
+  };
+
+  const handleDeleteWorkoutPlan = async () => {
+    try {
+      await axios.delete(`/WorkoutPlan/${workoutPlan.id}`);
+      onDelete(workoutPlan.id);
+      successToast("Workout plan deleted successfully");
+    } catch (error: any) {
+      errorToast("Failed to delete workout plan");
     }
   };
 
@@ -83,7 +100,9 @@ export const SettingsDropdown = ({ workoutPlan }: WorkoutPlanProps) => {
             </div>
           </DropdownItem>
         )}
-        <DropdownItem key="view-details">View Details</DropdownItem>
+        <DropdownItem key="delete" onPress={handleDeleteWorkoutPlan}>
+          Delete Workout Plan
+        </DropdownItem>
         <DropdownItem key="download-pdf" onPress={handleDownloadPdf}>
           Download PDF
         </DropdownItem>
