@@ -93,12 +93,11 @@ export const AuthorizedNavbar = () => {
           <NavbarItem isActive={location.pathname === ROUTES.WORKOUT_PLANS}>
             <Link
               as={RouterLink}
-              color={
-                location.pathname === ROUTES.WORKOUT_PLANS
-                  ? "secondary"
-                  : "foreground"
-              }
+              color="foreground"
               to={ROUTES.WORKOUT_PLANS}
+              underline={
+                location.pathname === ROUTES.WORKOUT_PLANS ? "always" : "none"
+              }
             >
               Workout Plans
             </Link>
@@ -106,12 +105,11 @@ export const AuthorizedNavbar = () => {
           <NavbarItem isActive={location.pathname === ROUTES.TRAINERS}>
             <Link
               as={RouterLink}
-              color={
-                location.pathname === ROUTES.TRAINERS
-                  ? "secondary"
-                  : "foreground"
-              }
+              color="foreground"
               to={ROUTES.TRAINERS}
+              underline={
+                location.pathname === ROUTES.TRAINERS ? "always" : "none"
+              }
             >
               Trainers
             </Link>
@@ -122,12 +120,13 @@ export const AuthorizedNavbar = () => {
             >
               <Link
                 as={RouterLink}
-                color={
-                  location.pathname === ROUTES.PROGRESS_LOGGING
-                    ? "secondary"
-                    : "foreground"
-                }
+                color="foreground"
                 to={ROUTES.PROGRESS_LOGGING}
+                underline={
+                  location.pathname === ROUTES.PROGRESS_LOGGING
+                    ? "always"
+                    : "none"
+                }
               >
                 Progress Logging
               </Link>
