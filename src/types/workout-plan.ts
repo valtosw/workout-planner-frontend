@@ -6,6 +6,29 @@ export interface WorkoutPlan {
   workoutPlanEntries: WorkoutPlanEntry[];
 }
 
+export interface CreateWorkoutPlan {
+  name: string;
+  createdBy: Creator;
+  assignedTo: Assignee | null;
+  workoutPlanEntries: WorkoutPlanEntry[];
+}
+
+export interface Creator {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  profilePicture: string | null;
+}
+
+export interface Assignee {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  profilePicture: string | null;
+}
+
 export interface WorkoutPlanEntry {
   reps: number;
   sets: number;
