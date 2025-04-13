@@ -1,84 +1,86 @@
 import {
   Autocomplete,
   AutocompleteItem,
-  Select,
-  SelectItem,
   NumberInput,
-  Input,
+  Button,
 } from "@heroui/react";
 import { useEffect, useState } from "react";
 
-import { errorToast } from "@/types/toast";
-import { getExerciseListByMuscleGroup } from "@/api/ModelApis/ExerciseApi";
+import axios from "@/api/axios";
 
-interface WorkoutPlanEntryProps {
-  muscleGroups: string[];
+interface WorkoutEntryProps {
+  onRemove: () => void;
+  onUpdate: (entry: WorkoutEntryData) => void;
 }
 
-export const WorkoutPlanEntry: React.FC<WorkoutPlanEntryProps> = ({
-  muscleGroups,
-}) => {
+export interface WorkoutEntryData {
+  exercise: string;
+  weight: number;
+  reps: number;
+  sets: number;
+}
+
+const WorkoutEntry: React.FC<WorkoutEntryProps> = ({ onRemove, onUpdate }) => {
   const [exercises, setExercises] = useState<string[]>([]);
-  const [isMuscleGroupSelected, setIsMuscleGroupSelected] =
-    useState<boolean>(false);
+  const [entryData, setEntryData] = useState<WorkoutEntryData>({
+    exercise: "",
+    weight: 0,
+    reps: 0,
+    sets: 0,
+  });
+
   const [selectedKey, setSelectedKey] = useState<React.Key | null>(null);
-
-  const [muscleGroup, setMuscleGroup] = useState<string>("");
-  const [exercise, setExercise] = useState<string>("");
-  const [reps, setReps] = useState<number>(0);
-  const [sets, setSets] = useState<number>(0);
-  const [weight, setWeight] = useState<number>(0);
-
-  const fetchExercisesByGroup = async () => {
-    try {
-      const response = await getExerciseListByMuscleGroup(muscleGroup);
-
-      setExercises(response);
-    } catch (error: any) {
-      errorToast("Failed to fetch exercises for a muscle group");
-    }
-  };
-
-  useEffect(() => {
-    if (muscleGroup) {
-      fetchExercisesByGroup();
-    }
-  }, [muscleGroup]);
 
   const onSelectionChange = (key: React.Key | null) => {
     setSelectedKey(key);
-    setExercise(key as string);
   };
 
   const onInputChange = (value: string) => {
-    setExercise(value);
+    const newData = { ...entryData, exercise: value };
+
+    setEntryData(newData);
+    onUpdate(newData);
   };
 
-  const handleSelectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setMuscleGroup(e.target.value);
-    setIsMuscleGroupSelected(true);
+  useEffect(() => {
+    const fetchExercises = async () => {
+      try {
+        const response = await axios.get("/Exercise/AllExercises");
+
+        setExercises(response.data);
+      } catch (error) {
+        console.error("Error fetching exercises:", error);
+      }
+    };
+
+    fetchExercises();
+  });
+
+  const handleNumberInputChange = (
+    field: keyof WorkoutEntryData,
+    value: number,
+  ) => {
+    const newData = { ...entryData, [field]: value };
+
+    setEntryData(newData);
+    onUpdate(newData);
   };
 
   return (
-    <>
-      <div className="flex flex-wrap items-center gap-4 p-4 bg-white dark:bg-gray-900 rounded-xl shadow-md">
-        <Select
-          isRequired
-          className="w-40"
-          label="Muscle Group"
-          selectedKeys={muscleGroup}
-          onChange={handleSelectionChange}
-        >
-          {muscleGroups.map((mg) => (
-            <SelectItem key={mg}>{mg}</SelectItem>
-          ))}
-        </Select>
+    <div className="p-4 border rounded-lg shadow-sm mb-4">
+      <div className="flex justify-between items-center mb-4">
+        <h3 className="font-medium">Workout Entry</h3>
+        <Button size="sm" variant="ghost" onPress={onRemove}>
+          Remove
+        </Button>
+      </div>
 
+      <div className="space-y-4">
         <Autocomplete
           isRequired
-          className="w-48"
-          isDisabled={!isMuscleGroupSelected}
+          isVirtualized
           label="Exercise"
+          value={entryData.exercise}
           onInputChange={onInputChange}
           onSelectionChange={onSelectionChange}
         >
@@ -87,39 +89,53 @@ export const WorkoutPlanEntry: React.FC<WorkoutPlanEntryProps> = ({
           ))}
         </Autocomplete>
 
-        <NumberInput
-          hideStepper
-          className="w-24"
-          defaultValue={0}
-          label="Reps"
-          minValue={0}
-          placeholder="Reps"
-          onValueChange={(value) => setReps(value)}
-        />
-
-        <NumberInput
-          hideStepper
-          className="w-24"
-          defaultValue={0}
-          label="Sets"
-          minValue={0}
-          placeholder="Sets"
-          onValueChange={(value) => setSets(value)}
-        />
-
-        <Input
-          className=""
-          endContent="KG"
-          errorMessage="Input valid weight"
-          label="Weight"
-          pattern="^\d+(\.\d{1,2})?$"
-          placeholder="0.0"
-          type="text"
-          onValueChange={(value) =>
-            setWeight(parseFloat(parseFloat(value).toFixed(2)))
-          }
-        />
+        <div className="grid grid-cols-3 gap-4">
+          <NumberInput
+            hideStepper
+            label="Weight (kg)"
+            min={0}
+            value={entryData.weight}
+            onChange={(value) =>
+              handleNumberInputChange(
+                "weight",
+                typeof value === "number"
+                  ? value
+                  : parseFloat(value.target.value),
+              )
+            }
+          />
+          <NumberInput
+            hideStepper
+            label="Reps"
+            min={0}
+            value={entryData.reps}
+            onChange={(value) =>
+              handleNumberInputChange(
+                "reps",
+                typeof value === "number"
+                  ? value
+                  : parseFloat(value.target.value),
+              )
+            }
+          />
+          <NumberInput
+            hideStepper
+            label="Sets"
+            min={0}
+            value={entryData.sets}
+            onChange={(value) =>
+              handleNumberInputChange(
+                "sets",
+                typeof value === "number"
+                  ? value
+                  : parseFloat(value.target.value),
+              )
+            }
+          />
+        </div>
       </div>
-    </>
+    </div>
   );
 };
+
+export default WorkoutEntry;
