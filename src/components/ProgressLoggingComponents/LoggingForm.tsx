@@ -9,7 +9,7 @@ import {
 import { CalendarDate, parseDate } from "@internationalized/date";
 
 import axios from "@/api/axios";
-import { successToast } from "@/types/toast";
+import { errorToast, successToast } from "@/types/toast";
 
 interface ProgressLogDto {
   ExerciseName: string;
@@ -56,7 +56,7 @@ const ProgressLogForm: React.FC<{ userId: string }> = ({ userId }) => {
       console.log("Selected weight:", weight);
       console.log("Selected date:", selectedDate);
 
-      alert("Please fill all required fields");
+      errorToast("Please fill all required fields");
 
       return;
     }
